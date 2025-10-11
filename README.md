@@ -314,7 +314,7 @@ chr19: 10587331-11635907 （AlphaGenome在HepG2 Cell Line中选取的区域�
     
 
 ```markdown
- ```python
+ ```
   def truncate_dna(example, truncate_dna_per_side=1024):
       # 从序列两端各截断1024个碱基对
       # 如果序列太短，返回中间部分
