@@ -1,6 +1,8 @@
-# Genos: Genomic Foundation Model Document 
-
 # Genos Genomic Foundation Model
+
+<p align="center">
+  English | <a href="README_zh.md">中文</a>
+</p>
 
 ## 1. Model Name
 

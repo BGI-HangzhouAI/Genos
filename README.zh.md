@@ -1,5 +1,9 @@
 # Genos: Genomic Foundation Model
 
+<p align="center">
+  <a href="README.md">English</a> | 中文
+</p>
+
 ## 1. 模型名字
 
 ![image.png](https://alidocs.oss-cn-zhangjiakou.aliyuncs.com/res/AJdl65AJbjamvOke/img/a5308220-330d-4e76-84e5-d773856897e6.png)
