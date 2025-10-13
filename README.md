@@ -126,7 +126,7 @@ We provide example Jupyter notebooks for:
 - **Batch**: Global 1024, Micro 1
 - **Optimizer**: AdamW (distributed sharded)
 - **Learning Rate**: up to 1e-4, cosine decay, 5-10% warmup
-- **Precision**: BF16 compute, FP32 for softmax/gradients/routing
+- **Precision**: BF16 for most compute, FP32 for softmax/gradients/routing
 
 ### Key Optimizations
 - **MoE Load Balancing**: Aux loss (1e-3) + Z-loss (1e-3)
