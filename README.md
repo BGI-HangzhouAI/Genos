@@ -62,10 +62,9 @@ Pretrained model checkpoints are available for research use:
 
 | Model Name        | Parameters | Context Length | Download Link |
 |-------------------|------------|----------------|---------------|
-| `GenOS-1.2B-32K`  | 1.2B       | 32,768 bp      | <a href="https://huggingface.co/BGI-HangzhouAI/Genos-1.2B">
-Genos-1.2B</a>       |
-| `GenOS-10B`       | 10B        | 1,000,000 bp   | <a href="https://huggingface.co/BGI-HangzhouAI/Genos-10B">
-Genos-10B</a>       |
+| `GenOS-1.2B-32K`  | 1.2B       | 32,768 bp      | [Genos-1.2B](https://huggingface.co/BGI-HangzhouAI/Genos-1.2B) |
+| `GenOS-10B`       | 10B        | 1,000,000 bp   | [Genos-10B](https://huggingface.co/BGI-HangzhouAI/Genos-10B)   |
+
 
 > Both models use a hybrid Mixture-of-Experts (MoE) architecture and support single-nucleotide resolution.
 
