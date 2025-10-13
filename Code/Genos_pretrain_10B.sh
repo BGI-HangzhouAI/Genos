@@ -96,8 +96,8 @@ TRAINING_ARGS=" \
 
 MODEL_PARALLEL_ARGS=" \
     --tensor-model-parallel-size 2 \
-    --pipeline-model-parallel-size 1 \
-    --expert-model-parallel-size 1 \
+    --pipeline-model-parallel-size 2 \
+    --expert-model-parallel-size 2 \
     --sequence-parallel \
     --use-distributed-optimizer \
     --context-parallel-size 2"
