@@ -45,13 +45,18 @@ Genos is a Mixture-of-Experts (MoE) Transformer for ultra-long DNA sequence mode
 - **Memory**: Flash Attention, sequence parallelism, distributed optimizer
 
 
+
 ## Citation
+If you use Genos in your research, please cite:
 
 ```bibtex
-@software{genos2025,
-  title={Genos: Genomic Language Model with Mixture-of-Experts},
+@article{Genos2025,
+  title={GenOS: A Human-Centric Genomic Foundation Model with Million-Base Context Modeling},
+  author={BGI Genomics and Zhejiang Lab},
+  journal={Preprint},
   year={2025}
 }
 ```
 
 Built with [Megatron-LM](https://github.com/NVIDIA/Megatron-LM)
+
