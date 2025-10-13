@@ -77,7 +77,12 @@ Genos基于Transformer架构，采用混合专家网络（Mixture-of-Experts, M
 
 ## 4. 部署及使用
 
-可参考 github 项目中的Readme文档：[https://github.com/BGI-HangzhouAI/Genos/blob/main/README.md](https://github.com/BGI-HangzhouAI/Genos/blob/main/README.md)
+模型权重：  
+| Model Name        | Parameters | Huggingface ckpt | Megatron ckpt |
+|-------------------|------------|----------------|---------------|
+| `Genos-1.2B`  | 1.2B       |  [Genos-1.2B](https://huggingface.co/BGI-HangzhouAI/Genos-1.2B) |  [Genos-1.2B](https://huggingface.co/BGI-HangzhouAI/Genos-Megatron-1.2B) |
+| `Genos-10B`       | 10B        |  [Genos-10B](https://huggingface.co/BGI-HangzhouAI/Genos-10B)   |  [Genos-10B](https://huggingface.co/BGI-HangzhouAI/Genos-Megatron-10B)   |
+
 
 ## 5. 性能测评
 
@@ -89,29 +94,12 @@ Genos 基因基座模型评测体系
     
 *   **短序列评测:** 测评模型对基因元件的识别和理解，我们从GB中选取了三类代表性分类任务：编码与非编码序列区分（demo coding vs intergenomic seqs）、增强子检测（human enhancers cohn）及开放染色质区域识别（human ocr ensembl）\[3\]。NTB任务包含剪接位点识别（splice sites all）和组蛋白修饰分类（H3、H3K36me3）\[4\]。
     
-*   **人群分类评测：**测试模型是否能有效利用更长序列中包含的更多的基因信息进行更为准确的推断。我们基于人类泛基因组联盟（**H**uman **P**angenome **R**eference **C**onsortium, _BioProject ID: PRJNA730823_）数据，在非洲、东亚、欧洲三组人群上设计了人群分类任务。我们根据样本的VCF文件与参考基因组序列生成样本伪序列，基于VCF文件记录的变异位点信息截取样本9号染色体变异密集区域，采用8,192 bp（8K）、32,768 bp（32K）和131,072 bp（128K）三种长度序列，通过xgboost分类器对单条序列做分类预测。
+*   **人群分类评测:**测试模型是否能有效利用更长序列中包含的更多的基因信息进行更为准确的推断。我们基于人类泛基因组联盟（**H**uman **P**angenome **R**eference **C**onsortium, _BioProject ID: PRJNA730823_）数据，在非洲、东亚、欧洲三组人群上设计了人群分类任务。我们根据样本的VCF文件与参考基因组序列生成样本伪序列，基于VCF文件记录的变异位点信息截取样本9号染色体变异密集区域，采用8,192 bp（8K）、32,768 bp（32K）和131,072 bp（128K）三种长度序列，通过xgboost分类器对单条序列做分类预测。
     
 *   **变异热点预测: 测评**模型能否仅凭序列特征捕捉局部变异的易发性，进一步考察模型是否具备刻画人群分化与演化历史相关信号的能力。我们基于中华群体基因组联盟数据（**C**hinese **P**angenome **C**onsortium ）\[6\]设计了突变热点分类任务。采用8,192 bp（8K）、32,768 bp（32K）和131,072 bp（128K）三种长度序列。通过泊松右尾检验识别突变热点，将各序列突变计数与同一染色体所有片段的背景均值比较，以错误发现率FDR < 0.05判定显著性。最终数据集由全部热点序列与等量随机选取的非热点序列合并构成。
     
 
-| **测评类型** | **类型说明** | **测评任务** | **Genos-10B** | **Genos-1.2B** | **Evo2-40B** | **Evo2-7B** | **Evo2-1B** | **GENERator-3B** | **HyenaDNA-1M** | **NT-2.5B-multi** |
-|:--------------|:--------------|:--------------|:-------------:|:--------------:|:-------------:|:-------------:|:-------------:|:----------------:|:----------------:|:-----------------:|
-| **长序列测评**<br>（序列长度：8k） | 评价模型对基因互作、调控作用的识别和理解能力；如识别长序列上的启动子、增强子等长程调控作用 | regulatory element promoter 8K\[5\] | **0.9249** | 0.9221 | 0.9227 | **0.9255** | 0.9245 | 0.9195 | 0.8890 | / |
-|  |  | regulatory element enhancer 8K\[5\] | **0.7532** | 0.7469 | **0.7527** | 0.7454 | 0.7413 | 0.7390 | 0.7282 | / |
-|  |  | variant effect causal eqtl 8K\[5\] | 0.6773 | 0.6990 | **0.7054** | **0.7039** | 0.6955 | 0.6920 | 0.6887 | / |
-|  |  | variant effect pathogenic clinvar 8K\[5\] | **0.9326** | 0.6907 | **0.9167** | 0.7308 | 0.7240 | 0.7206 | 0.6117 | / |
-| **短序列测评**<br>（序列长度：200-600 bp） | 评价模型对基因元件的识别和理解能力，如预测序列是否是外显子、启动子、增强子、甲基化等基因元件 | demo coding vs intergenomic seqs\[3\] | **0.9914** | 0.9708 | **0.9886** | 0.9824 | 0.9814 | 0.9855 | 0.9127 | 0.9763 |
-|  |  | human enhancers cohn\[3\] | **0.8552** | **0.8715** | 0.7756 | 0.7733 | 0.7612 | 0.8181 | 0.7799 | 0.7873 |
-|  |  | human ocr ensembl\[3\] | **0.7623** | 0.7569 | **0.7635** | 0.7505 | 0.7456 | 0.7270 | 0.6916 | 0.7285 |
-|  |  | splice sites all\[3\] | 0.7990 | 0.7819 | **0.9138** | **0.8747** | 0.8725 | 0.8071 | 0.7110 | 0.8603 |
-|  |  | H3\[4\] | **0.9400** | 0.8944 | 0.9311 | 0.9140 | 0.9351 | 0.9163 | 0.8722 | **0.9371** |
-|  |  | H3K36me3\[4\] | 0.7658 | 0.6883 | **0.8823** | **0.8615** | 0.8485 | 0.8247 | 0.6787 | 0.8288 |
-| **人群预测**<br>（长序列） | 评价模型是否能有效利用更长序列中包含的更多基因信息进行更为准确的推断 | Human classify 8192 | **0.6667** | **0.6349** | 0.6309 | / | / | 0.6138 | 0.6239 | / |
-|  |  | Human classify 32768 | **0.7669** | **0.7357** | 0.7248 | / | / | 0.7016 | 0.7040 | / |
-|  |  | Human classify 131072 | **0.8214** | 0.7732 | 0.7204 | / | / | 0.7236 | 0.7317 | / |
-| **变异热点测评**<br>（序列长度：8k-128k） | 评价模型对基因组整体规律的理解能力，如识别人类基因组序列上的变异热点区域 | CPC 8192 | **0.9522** | 0.9093 | 0.9401 | 0.9425 | **0.9443** | 0.9315 | 0.8914 | / |
-|  |  | CPC 32768 | **0.9625** | 0.9440 | **0.9611** | 0.9504 | / | 0.9237 | 0.9064 | / |
-|  |  | CPC 131072 | **0.9911** | **0.9872** | / | / | / | 0.9620 | 0.9735 | / |
+![model](images/评测结果.20251013.png)
 
 
 *   HyenaDNA, Nucleotide Transformer (NT), 以及GENERator系列的其他版本公开模型也进行了测试，因篇幅有限未能罗列已测评的模型还包括GENERator-1.2b，HyenaDNA-32k，HyenaDNA-450k，NT-500M，以及 Evo2-1b，这里仅展示了各系列中表现最好的模型。
@@ -291,4 +279,4 @@ Genos-10B: BGI-HangzhouAI/Genos-10B
 
 \[7\] Fallahpour, Adibvafa, et al. BioReason: Incentivizing Multimodal Biological Reasoning within a DNA-LLM Model. arXiv preprint arXiv:2505.23579 (2025).
 
-Liao, W.-W. _et al._ A draft human pangenome reference. _Nature_ **617**, 312–324 (2023).
+\[8\] Liao, W.W. et al. A draft human pangenome reference. Nature 617, 312–324 (2023).
