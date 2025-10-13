@@ -24,6 +24,7 @@ Genos is a human-centric genomic foundation model trained on high-quality, chrom
     - [Embeddings](#embeddings)
     - [Generation](#generation)
   - [Notebooks](#notebooks)
+  - [Pre-training](#Pre-training)
   - [Training](#training)
   - [Performance](#performance)
     - [Benchmarking](#benchmarking)
@@ -102,6 +103,35 @@ We provide example Jupyter notebooks for:
 - RNA-seq track generation
 
 🔗 *Notebook links:待补充*
+
+---
+
+## Pre-training
+### Key Features
+
+- **MoE**: 8 experts, Top-2 routing, 25% FFN sparsity
+- **GQA**: 50% KV cache reduction
+- **RoPE**: Base 50M for ultra-long context 
+- **Modern Stack**: RMSNorm, SwiGLU, Flash Attention
+
+### Pre-Training Strategy
+- **Objective**: Next Token Prediction (NTP) with self-supervised learning
+- **Progressive Context Scaling**: 8K → 32K → 128K → 1M tokens across training stages
+- **Data**:  high-quality, chromosome-scale de novo assemblies from publicly available resources such as HPRC and HGSVC
+- **Tokenizer**: One-hot optimized for DNA bases (A, T, C, G)
+
+### Infrastructure
+- **Framework**: Megatron-LM on 256 GPUs
+- **Parallelism**: 5D strategy (TP, CP, DP, PP, EP)
+- **Batch**: Global 1024, Micro 1
+- **Optimizer**: AdamW (distributed sharded)
+- **Learning Rate**: up to 1e-4, cosine decay, 5-10% warmup
+- **Precision**: BF16 compute, FP32 for softmax/gradients/routing
+
+### Key Optimizations
+- **MoE Load Balancing**: Aux loss (1e-3) + Z-loss (1e-3)
+- **Communication**: Grouped GEMM, AllToAll dispatch, overlapped gradient reduction
+- **Memory**: Flash Attention, sequence parallelism, distributed optimizer
 
 ---
 
