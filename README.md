@@ -6,6 +6,7 @@
 
 
 Genos is a human-centric genomic foundation model trained on high-quality, chromosome-scale de novo assemblies from publicly available resources such as HPRC and HGSVC, representing diverse global populations. Genos supports million–base-pair context modeling at single-nucleotide resolution using a hybrid Mixture-of-Experts (MoE) architecture. The current release includes 1.2B and 10B parameter versions, optimized for variant interpretation, regulatory element prediction, and functional genome analysis.  
+
 ![model](images/Genos_model.png)
 → Learn more in the <a href="Documents/README.md">document</a>.
 ## Contents
