@@ -24,7 +24,11 @@ Genos is a human-centric genomic foundation model trained on high-quality, chrom
     - [Embeddings](#embeddings)
     - [Generation](#generation)
   - [Notebooks](#notebooks)
-  - [Pre-training](#Pre-training)
+  - [Pre-training](#pre-training)
+    - [Key Features](#key-features)
+    - [Pre-Training Strategy](#pre-training-strategy)
+    - [Infrastructure](#infrastructure)
+    - [Key Optimizations](#key-optimizations)
   - [Training](#training)
   - [Performance](#performance)
     - [Benchmarking](#benchmarking)
@@ -118,7 +122,7 @@ We provide example Jupyter notebooks for:
 - **Objective**: Next Token Prediction (NTP) with self-supervised learning
 - **Progressive Context Scaling**: 8K → 32K → 128K → 1M tokens across training stages
 - **Data**:  high-quality, chromosome-scale de novo assemblies from publicly available resources such as HPRC and HGSVC
-- **Tokenizer**: One-hot optimized for DNA bases (A, T, C, G)
+- **Tokenizer**: One-hot optimized for DNA bases (A, T, C, G and N)
 
 ### Infrastructure
 - **Framework**: Megatron-LM on 256 GPUs
