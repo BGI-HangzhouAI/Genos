@@ -131,6 +131,7 @@ We provide example Jupyter notebooks for:
 - **Communication**: Grouped GEMM, AllToAll dispatch, overlapped gradient reduction
 - **Memory**: Flash Attention, sequence parallelism, distributed optimizer
 
+---
 
 ## Training
 Genos was pretrained on >1,500B tokens from diverse, high-quality human genomes (HPRC, HGSVC). Fine-tuning examples include:
