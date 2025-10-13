@@ -24,6 +24,7 @@ Genos is a human-centric genomic foundation model trained on high-quality, chrom
     - [Embeddings](#embeddings)
     - [Generation](#generation)
   - [Notebooks](#notebooks)
+  - [Pre-training](#Pre-training)
   - [Training](#training)
   - [Citation](#citation)
   - [License](#license)
