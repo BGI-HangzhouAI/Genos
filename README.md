@@ -25,6 +25,8 @@ Genos is a human-centric genomic foundation model trained on high-quality, chrom
     - [Generation](#generation)
   - [Notebooks](#notebooks)
   - [Training](#training)
+  - [Performance](#performance)
+    - [Benchmarking](#benchmarking)
   - [Citation](#citation)
   - [License](#license)
   - [Contact](#contact)
@@ -61,10 +63,10 @@ Genos is a human-centric genomic foundation model trained on high-quality, chrom
 ### Checkpoints
 Pretrained model checkpoints are available for research use:
 
-| Model Name        | Parameters | Context Length | Download Link |
+| Model Name        | Parameters | Huggingface ckpt | Megatron ckpt |
 |-------------------|------------|----------------|---------------|
-| `GenOS-1.2B-32K`  | 1.2B       | 32,768 bp      | [Genos-1.2B](https://huggingface.co/BGI-HangzhouAI/Genos-1.2B) |
-| `GenOS-10B`       | 10B        | 1,000,000 bp   | [Genos-10B](https://huggingface.co/BGI-HangzhouAI/Genos-10B)   |
+| `Genos-1.2B`  | 1.2B       |  [Genos-1.2B](https://huggingface.co/BGI-HangzhouAI/Genos-1.2B) |  [Genos-1.2B](https://huggingface.co/BGI-HangzhouAI/Genos-Megatron-1.2B) |
+| `Genos-10B`       | 10B        |  [Genos-10B](https://huggingface.co/BGI-HangzhouAI/Genos-10B)   |  [Genos-10B](https://huggingface.co/BGI-HangzhouAI/Genos-Megatron-10B)   |
 
 
 > Both models use a hybrid Mixture-of-Experts (MoE) architecture and support single-nucleotide resolution.
@@ -116,13 +118,18 @@ See [Document](Documents/README.md#case-1-rna-seq-data-generation) for full trai
 
 ---
 
+## Performance
+
+### Benchmarking
+
+
 ## Citation
 If you use Genos in your research, please cite:
 
 ```bibtex
 @article{Genos2025,
-  title={GenOS: A Human-Centric Genomic Foundation Model with Million-Base Context Modeling},
-  author={BGI Genomics and Zhejiang Lab},
+  title={Genos: A Human-Centric Genomic Foundation Model},
+  author={Genos team，Hangzhou，China},
   journal={Preprint},
   year={2025}
 }

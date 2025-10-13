@@ -29,7 +29,7 @@ Genos is a Mixture-of-Experts (MoE) Transformer for ultra-long DNA sequence mode
 - **Objective**: Next Token Prediction (NTP) with self-supervised learning
 - **Progressive Context Scaling**: 8K → 32K → 128K → 1M tokens across training stages
 - **Data**:  high-quality, chromosome-scale de novo assemblies from publicly available resources such as HPRC and HGSVC
-- **Tokenizer**: One-hot optimized for DNA bases (A, T, C, G)
+- **Tokenizer**: One-hot optimized for DNA bases (A, T, C, G and N)
 
 ### Infrastructure
 - **Framework**: Megatron-LM on 256 GPUs
@@ -51,8 +51,8 @@ If you use Genos in your research, please cite:
 
 ```bibtex
 @article{Genos2025,
-  title={GenOS: A Human-Centric Genomic Foundation Model with Million-Base Context Modeling},
-  author={BGI Genomics and Zhejiang Lab},
+  title={Genos: A Human-Centric Genomic Foundation Model},
+  author={Genos team，Hangzhou，China},
   journal={Preprint},
   year={2025}
 }
