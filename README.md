@@ -56,24 +56,24 @@ Genos基于Transformer架构，采用混合专家网络（Mixture-of-Experts, M
     
 3.  **动态专家激活架构** 此次发布的两个模型：12亿参数版本与100亿参数版本，均支持百万级超长序列推理。动态路由算法（Dynamic Routing Algorithm）可根据输入序列的特征，实时激活相关专家模块。
     
-
-| **Model Specification** |  |  |
+| **Model Specification** | **Genos 1.2B** | **Genos 10B** |
 | --- | --- | --- |
-| **Version** | **Genos 1.2B** | **Genos 10B** |
-| ++**Model Scale**++ |  |  |
-| Total Parameters | 1.2B | 10B |
-| Activated Parameters | 0.33B | 2.87B |
-| Trained Tokens | 1600 B | 2200 B |
+| **Version** | Genos 1.2B | Genos 10B |
+| ++**Model Scale**++ |  |  |
+| Total Parameters | 1.2B | 10B |
+| Activated Parameters | 0.33B | 2.87B |
+| Trained Tokens | 1600 B | 2200 B |
 | ++**Architecture**++ |  |  |
-| Architecture | MoE |  |
-| Number of Experts | 8 |  |
-| Selected Experts per Token | 2 |  |
-| Number of Layers | 12 |  |
-| Attention Hidden Dimension | 1024 | 4096 |
-| Number of Attention Heads | 16 |  |
-| MoE Hidden Dimension (per Expert) | 4096 | 8192 |
-| Vocabulary Size | 128(padded) | 256(padded) |
-| Context Length | up to 1M |  |
+| Architecture | MoE | MoE |
+| Number of Experts | 8 | 8 |
+| Selected Experts per Token | 2 | 2 |
+| Number of Layers | 12 | 12 |
+| Attention Hidden Dimension | 1024 | 4096 |
+| Number of Attention Heads | 16 | 16 |
+| MoE Hidden Dimension (per Expert) | 4096 | 8192 |
+| Vocabulary Size | 128 (padded) | 256 (padded) |
+| Context Length | up to 1M | up to 1M |
+
 
 ## 4. 部署及使用
 
