@@ -80,8 +80,8 @@ Genos基于Transformer架构，采用混合专家网络（Mixture-of-Experts, M
 模型权重：  
 | Model Name        | Parameters | Huggingface ckpt | Megatron ckpt |
 |-------------------|------------|----------------|---------------|
-| `Genos-1.2B`  | 1.2B       |  [Genos-1.2B](https://huggingface.co/BGI-HangzhouAI/Genos-1.2B) |  [Genos-1.2B](https://huggingface.co/BGI-HangzhouAI/Genos-Megatron-1.2B) |
-| `Genos-10B`       | 10B        |  [Genos-10B](https://huggingface.co/BGI-HangzhouAI/Genos-10B)   |  [Genos-10B](https://huggingface.co/BGI-HangzhouAI/Genos-Megatron-10B)   |
+| `Genos-1.2B`  | 1.2B       |  [Genos-1.2B](https://huggingface.co/BGI-HangzhouAI/Genos-1.2B) |  [Genos-Megatron-1.2B](https://huggingface.co/BGI-HangzhouAI/Genos-Megatron-1.2B) |
+| `Genos-10B`       | 10B        |  [Genos-10B](https://huggingface.co/BGI-HangzhouAI/Genos-10B)   |  [Genos-Megatron-10B](https://huggingface.co/BGI-HangzhouAI/Genos-Megatron-10B)   |
 
 
 ## 5. 性能测评
