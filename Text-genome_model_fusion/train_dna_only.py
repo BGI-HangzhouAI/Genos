@@ -2,14 +2,13 @@ import os
 import time
 import argparse
 import torch
-import wandb
 from torch.optim import AdamW
 from torch.utils.data import DataLoader
 from transformers import get_cosine_schedule_with_warmup, AutoTokenizer
 from datasets import load_dataset, concatenate_datasets
 import pytorch_lightning as pl
 from pytorch_lightning.callbacks import ModelCheckpoint, LearningRateMonitor
-from pytorch_lightning.loggers import WandbLogger
+from pytorch_lightning.loggers import TensorBoardLogger
 from pytorch_lightning.strategies import DeepSpeedStrategy
 from bioreason.models.dna_only import DNAClassifierModel
 from bioreason.dataset.utils import truncate_dna
@@ -100,8 +99,6 @@ class DNAClassifierModelTrainer(pl.LightningModule):
         loss = loss_fn(logits, labels)
 
         # Calculate accuracy
-        
-        # 假设 preds 和 labels 是 shape=[batch_size] 的 torch.Tensor
         preds = torch.argmax(logits, dim=1)
         preds_np = preds.cpu()
         labels_np = labels.cpu()
@@ -116,26 +113,6 @@ class DNAClassifierModelTrainer(pl.LightningModule):
             self.test_preds.append(preds_np)
             self.test_labels.append(labels_np)
 
-        # 假设 preds 和 labels 是 tensor
-        # acc = accuracy_score(labels.cpu().numpy(), preds.cpu().numpy())
-        # # 多分类推荐用以下 average 模式：
-        # precision = precision_score(labels_np, preds_np, average='macro')
-        # recall = recall_score(labels_np, preds_np, average='macro')
-        # f1 = f1_score(labels_np, preds_np, average='macro')
-        
-        # acc = (preds == labels).float().mean()
-
-        # Calculate F1 score, precision, and recall for binary classification
-        # Assuming label 1 is positive and label 0 is negative as mentioned
-        # true_positives = ((preds == 1) & (labels == 1)).float().sum()
-        # false_positives = ((preds == 1) & (labels == 0)).float().sum()
-        # false_negatives = ((preds == 0) & (labels == 1)).float().sum()
-        
-        # Calculate precision, recall, and F1 score
-        # precision = true_positives / (true_positives + false_positives + 1e-8)  # add small epsilon to avoid division by zero
-        # recall = true_positives / (true_positives + false_negatives + 1e-8)
-        # f1 = 2 * precision * recall / (precision + recall + 1e-8)
-
         # Logging metrics
         self.log(
             f"{prefix}_loss",
@@ -145,14 +122,6 @@ class DNAClassifierModelTrainer(pl.LightningModule):
             prog_bar=True,
             logger=True,
         )
-        # self.log(
-        #     f"{prefix}_acc",
-        #     acc,
-        #     on_step=True,
-        #     on_epoch=False,
-        #     prog_bar=True,
-        #     logger=True,
-        # )
         self.log(
             f"{prefix}_loss_epoch",
             loss,
@@ -162,88 +131,10 @@ class DNAClassifierModelTrainer(pl.LightningModule):
             logger=True,
             sync_dist=True,
         )
-        # self.log(
-        #     f"{prefix}_acc_epoch",
-        #     acc,
-        #     on_step=False,
-        #     on_epoch=True,
-        #     prog_bar=True,
-        #     logger=True,
-        #     sync_dist=True,
-        # )
-        # self.log(
-        #     f"{prefix}_precision",
-        #     precision,
-        #     on_step=True,
-        #     on_epoch=False,
-        #     prog_bar=True,
-        #     logger=True,
-        # )
-        # self.log(
-        #     f"{prefix}_precision_epoch",
-        #     precision,
-        #     on_step=False,
-        #     on_epoch=True,
-        #     prog_bar=True,
-        #     logger=True,
-        #     sync_dist=True,
-        # )
-        # self.log(
-        #     f"{prefix}_recall",
-        #     recall,
-        #     on_step=True,
-        #     on_epoch=False,
-        #     prog_bar=True,
-        #     logger=True,
-        # )
-        # self.log(
-        #     f"{prefix}_recall_epoch",
-        #     recall,
-        #     on_step=False,
-        #     on_epoch=True,
-        #     prog_bar=True,
-        #     logger=True,
-        #     sync_dist=True,
-        # )
-        # self.log(
-        #     f"{prefix}_f1",
-        #     f1,
-        #     on_step=True,
-        #     on_epoch=False,
-        #     prog_bar=True,
-        #     logger=True,
-        # )
-        # self.log(
-        #     f"{prefix}_f1_epoch",
-        #     f1,
-        #     on_step=False,
-        #     on_epoch=True,
-        #     prog_bar=True,
-        #     logger=True,
-        #     sync_dist=True,
-        # )
 
         if (prefix == "test") or (prefix == "train" and (self.global_step % 1000 == 0)) or (prefix == "val" and (batch_idx % 100 == 0)):
-            wandb_logger = self.logger.experiment
-                
             pred_label = self.labels[preds[0]]
             true_label = self.labels[labels[0]]
-            if not hasattr(self, "pred_table"):
-                self.pred_table = wandb.Table(columns=["timestamp", "prefix", "pred_label", "true_label"])
-            self.pred_table.add_data(time.time(), prefix, pred_label, true_label)
-            wandb_logger.log({f"step_id": self.pred_table})
-            # timestamp = time.time()
-            # step_id = f"gen_{self.global_step}-{timestamp}"
-
-            # wandb_logger.log(
-            #     {
-            #         step_id: wandb.Table(
-            #             columns=["timestamp", "prefix", "pred_label", "true_label"],
-            #             data=[[timestamp, prefix, pred_label, true_label]],
-            #         )
-            #     }
-            # )
-            
             print(f"Example {prefix} {batch_idx} {self.global_step}: Prediction: {pred_label}, Target: {true_label}")
 
         return loss
@@ -543,7 +434,7 @@ def main(args):
     model = DNAClassifierModelTrainer(args)
 
     # Setup directories
-    run_name = f"{args.wandb_project}-{args.dataset_type}-{args.dna_model_name.split('/')[-1]}"
+    run_name = f"{args.project_name}-{args.dataset_type}-{args.dna_model_name.split('/')[-1]}"
     args.checkpoint_dir = f"{args.checkpoint_dir}/{run_name}-{time.strftime('%Y%m%d-%H%M%S')}"
     args.output_dir = f"{args.output_dir}/{run_name}-{time.strftime('%Y%m%d-%H%M%S')}"
     os.makedirs(args.output_dir, exist_ok=True)
@@ -563,13 +454,9 @@ def main(args):
     ]
 
     # Setup logger
-    is_resuming = args.ckpt_path is not None
-    logger = WandbLogger(
-        project=args.wandb_project,
-        entity=args.wandb_entity,
+    logger = TensorBoardLogger(
         save_dir=args.log_dir,
-        name=run_name,
-        resume="allow" if is_resuming else None,  # Allow resuming existing run
+        name=args.project_name,
     )
 
     # Initialize trainer
@@ -641,9 +528,8 @@ if __name__ == "__main__":
         "--checkpoint_dir", type=str, default="checkpoints"
     )
     parser.add_argument("--ckpt_path", type=str, default=None)
-    parser.add_argument("--log_dir", type=str, default="logs")
-    parser.add_argument("--wandb_project", type=str, default="dna-only-nt-500m")
-    parser.add_argument("--wandb_entity", type=str, default="adibvafa")
+    parser.add_argument("--log_dir", type=str, default="tb_logs")
+    parser.add_argument("--project_name", type=str, default="dna-only-nt-500m")
     parser.add_argument("--merge_val_test_set", type=bool, default=True)
 
     # Other parameters
