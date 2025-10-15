@@ -155,7 +155,6 @@ F1_score = macro_metrics['f1-score']
 
 ● 混合精度: 支持大批次训练
 
-![model](../images/text-genome.png)
 
 ## 6. 使用
 ### 6.1 环境准备

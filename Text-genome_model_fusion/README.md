@@ -156,7 +156,6 @@ F1_score = macro_metrics['f1-score']
 
 ● Mixed Precision: Support large batch training
 
-![model](../images/text-genome.png)
 
 ## 6. Usage
 ### 6.1 Environment Setup
