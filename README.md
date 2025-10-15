@@ -1,6 +1,6 @@
 # Genos：人类基因组基础模型
 
-![model](https://alidocs.oss-cn-zhangjiakou.aliyuncs.com/res/NpQlK5jmkj0ADqDv/img/b63bb8a7-3894-44be-8e9f-9e22f07f35d3.png)
+![model](images/Genos_LOGO.png)
 
 ## 1. 目录
 
