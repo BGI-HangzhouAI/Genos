@@ -257,11 +257,11 @@ Genos-10B: BGI-HangzhouAI/Genos-10B
 
 ## 8. Licence 说明
 
-本工作倡导生物AI社区的开放共享，支持MIT License。详见`MIT © 2025 <Your Name or Company>`
+本工作倡导生物AI社区的开放共享，支持MIT License。
 
 ## 9. 联系我们
 
-如果您疑问或合作意向，欢迎联系我们。 邮箱: bgi-Genos@genomics.cn
+如果您疑问或合作意向，欢迎联系我们。 邮箱: Genos@genomics.cn
 
 ## References
 
