@@ -50,7 +50,7 @@ class DLProcessor(ProcessorMixin):
     valid_kwargs = ["model", "chat_template"]
     tokenizer_class = (
         "Qwen2Tokenizer", "Qwen2TokenizerFast",
-        "GPT2TokenizerFast",
+        "GPT2TokenizerFast","LlamaTokenizerFast"
     )
     dna_tokenizer_class = ("EsmTokenizer", "Evo2Tokenizer","Character_Tokenizer","PreTrainedTokenizerFast")
 
