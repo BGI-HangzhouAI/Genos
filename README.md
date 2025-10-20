@@ -209,31 +209,7 @@ Genos 基因基座模型评测体系
 
 不同模型在KEGG数据集上的结果对比情况如下表，其中基因模型中 Genos-10B 性能领先，文本-基因融合模型性能远超单独模态的模型，其中 021-8B与 Genos-1.2B融合模型准确率高达 98.28%，比单独用 Genos-1.2B高出 7%。
 
-| **Text-Model** | **Genome-Model** | **Accuracy** |
-| --- | --- | --- |
-| **Genome Model Only** |  |  |
-| / | **Genos-10B** | **0.9207** |
-|  | **Genos-1.2B** | **0.9172** |
-|  | Evo2-1.2b | 0.8828 |
-|  | HyenaDNA-1m | 0.5000 |
-|  | NT-2.5b-multi | 0.8655 |
-| **Text-Genome Model Fusion** |  |  |
-| **021-8B** | **Genos-1.2B** | **0.9828** |
-| **021-8B** | Evo2-1.2b | **0.9759** |
-| Qwen3-8B | HyenaDNA-1m | 0.9758 |
-| Qwen3-4B | Evo2-1.2b | 0.9724 |
-| **021-8B** | **Genos-10B** | 0.9723 |
-| Qwen3-4b | **Genos-1.2B** | 0.9690 |
-| Qwen3-4B | NT-2.5b-multi | 0.9690 |
-| **021-8B** | HyenaDNA-1m | 0.9655 |
-| Qwen3-8B | Evo2-1.2b | 0.9621 |
-| Qwen3-4B | **Genos-10B** | 0.9621 |
-| Qwen3-4B | HyenaDNA-1m | 0.9621 |
-| Qwen3-1B | HyenaDNA-1m | 0.9345 |
-| Qwen3-1b | **Genos-1.2B** | 0.9138 |
-| Qwen3-1B | Evo2-1.2b | 0.9042 |
-| Qwen3-1b | **Genos-10B** | 0.8897 |
-| Qwen3-1B | NT-2.5b-multi | 0.8842 |
+![model](images/text_gLM.benchmark_res.20251020.png)
 
 模型说明：
 
