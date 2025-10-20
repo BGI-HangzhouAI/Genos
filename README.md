@@ -217,7 +217,7 @@ Genos-1.2B: BGI-HangzhouAI/Genos-1.2B
 
 Genos-10B: BGI-HangzhouAI/Genos-10B
 
-021-8B: 021 Science Foundation Model - 8B.  The 021 Science Foundation Model is a large language model trained on extensive scientific corpora with profound scientific cognition. It is scheduled to be released at a later date. 
+021-8B: 021 Science Foundation Model-8B is a large language model trained on extensive scientific corpora with profound scientific cognition. It is scheduled to be released at a later date. 
 
 ## 7. 数据可用性
 
