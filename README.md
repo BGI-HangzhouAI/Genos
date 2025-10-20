@@ -184,7 +184,9 @@ Genos 基因基座模型评测体系
 **简介：**
 
 该项目为了验证多模态模型（基因模型+文本模型）在基因变异导致的疾病预测任务上，能够处理原始DNA序列，同时利用大语言模型的推理能力，生成具有生物学一致性的解释与预测。
-![model](images/text_gLM.png)
+
+![image.png](https://alidocs.oss-cn-zhangjiakou.aliyuncs.com/res/NpQlK5jmkj0ADqDv/img/35006876-15a3-42be-9f1c-34167d2819cd.png)
+
 **数据**：
 
 数据来源于论文Bioreason\[7\]当中的kegg任务，该任务数据通过多阶段整合KEGG通路与临床数据库变异信息，采用标准化符号系统表征分子网络中的各类相互作用，提供参考序列与变异序列的比。KEGG数据集包含1449条共计37种疾病信息，其中数据分配训练：验证：测试= 8:1:1。数据输入包括问题描述，参考基因序列与变异基因序列。输出包括推理和疾病分类预测。
@@ -200,50 +202,52 @@ Genos 基因基座模型评测体系
 
 **评价指标：**
 
-*   **准确率 (Accuracy)**: 正确预测的样本占总样本的比例
-    
-*   **精确率 (Precision)**: 宏平均精确率，所有类别精确率的平均值
-    
-*   **召回率 (Recall)**: 宏平均召回率，所有类别召回率的平均值
-    
-*   **F1分数 (F1-Score)**: 宏平均F1分数，精确率和召回率的调和平均。
+*   **准确率 (Accuracy)**: 正确预测的样本占总样本的比例。
     
 
 #### 结果数据对比
 
-不同模型在KEGG数据集上的结果对比情况如下：
+不同模型在KEGG数据集上的结果对比情况如下表，其中基因模型中 Genos-10B 性能领先，文本-基因融合模型性能远超单独模态的模型，其中 021-8B与 Genos-1.2B融合模型准确率高达 98.28%，比单独用 Genos-1.2B高出 7%。
 
-| model type | Model | Accuracy | F1-score | Precision | Recall |
-| --- | --- | --- | --- | --- | --- |
-| dna | NT | 86.55% | 69.76% | 73.23% | 66.62% |
-| dna | evo2-1.2b | 88.28% | 72.43% | 75.23% | 69.83% |
-| dna | Hyena-large-1m | 50.00% | 11.11% | 9.22% | 14.98% |
-| dna | Genos-1.2B | **91.72%** | 78.75% | 81.09% | 81.64% |
-| dna | Genos-10B | 90.00% | **89.00%** | **89.40%** | **90.00%** |
-| llm | Qwen1B | 85.17% | 65.71% | 71.39% | 64.19% |
-| llm | Qwen4B | **93.48%** | **85.44%** | **88.31%** | **86.72%** |
-| dna-llm | NT+Qwen1B | 88.42% | 72.13% | 75.42% | 71.91% |
-| dna-llm | NT+Qwen4B | 96.90% | 89.03% | 90.99% | 89.38% |
-| dna-llm | evo2+Qwen3-1B | 90.42% | 75.62% | 77.42% | 73.91% |
-| dna-llm | evo2+Qwen3-4B | **97.24%** | 86.30% | 86.75% | 87.25% |
-| dna-llm | Hyena-1m+Qwen3-1B | 93.45% | 93.12% | 99.05% | **91.29%** |
-| dna-llm | Hyena-1m+Qwen3-4B | 96.21% | 89.55% | 99.94% | 87.02% |
-| dna-llm | Genos-1.2B+qwen1b | 91.38% | 83.08% | 99.57% | 79.50% |
-| dna-llm | Genos-1.2B+qwen4b | 96.90% | **93.24%** | **100.00%** | 91.15% |
-| dna-llm | Genos-10B+qwen1b | 88.97% | 79.24% | 98.22% | 76.99% |
-| dna-llm | Genos-10B+qwen4b | 96.21% | 91.75% | **100.00%** | 90.30% |
+| **Text-Model** | **Genome-Model** | **Accuracy** |
+| --- | --- | --- |
+| **Genome Model Only** |  |  |
+| / | **Genos-10B** | **0.9207** |
+|  | **Genos-1.2B** | **0.9172** |
+|  | Evo2-1.2b | 0.8828 |
+|  | HyenaDNA-1m | 0.5000 |
+|  | NT-2.5b-multi | 0.8655 |
+| **Text-Genome Model Fusion** |  |  |
+| **021-8B** | **Genos-1.2B** | **0.9828** |
+| **021-8B** | Evo2-1.2b | **0.9759** |
+| Qwen3-8B | HyenaDNA-1m | 0.9758 |
+| Qwen3-4B | Evo2-1.2b | 0.9724 |
+| **021-8B** | **Genos-10B** | 0.9723 |
+| Qwen3-4b | **Genos-1.2B** | 0.9690 |
+| Qwen3-4B | NT-2.5b-multi | 0.9690 |
+| **021-8B** | HyenaDNA-1m | 0.9655 |
+| Qwen3-8B | Evo2-1.2b | 0.9621 |
+| Qwen3-4B | **Genos-10B** | 0.9621 |
+| Qwen3-4B | HyenaDNA-1m | 0.9621 |
+| Qwen3-1B | HyenaDNA-1m | 0.9345 |
+| Qwen3-1b | **Genos-1.2B** | 0.9138 |
+| Qwen3-1B | Evo2-1.2b | 0.9042 |
+| Qwen3-1b | **Genos-10B** | 0.8897 |
+| Qwen3-1B | NT-2.5b-multi | 0.8842 |
 
 模型说明：
 
-NT：InstaDeepAI/nucleotide-transformer-v2-500m-multi-species
+NT-2.5b-multi：InstaDeepAI/nucleotide-transformer-v2-500m-multi-species
 
-evo2-1b：arcinstitute/evo2 1b base
+Evo2-1b：arcinstitute/evo2\_1b\_base
 
-Hyena-1m: LongSafari/hyenadna-large-1m-seqlen
+HyenaDna-1m: LongSafari/hyenadna-large-1m-seqlen
 
 Genos-1.2B: BGI-HangzhouAI/Genos-1.2B
 
 Genos-10B: BGI-HangzhouAI/Genos-10B
+
+021-8B: 021 Science Foundation Model - 8B.  The 021 Science Foundation Model is a large language model trained on extensive scientific corpora with profound scientific cognition. It is scheduled to be released at a later date. 
 
 ## 7. 数据可用性
 
