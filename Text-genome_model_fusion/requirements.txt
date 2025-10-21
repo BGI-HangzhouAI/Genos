@@ -1,0 +1,20 @@
+torch==2.7.1 
+torchvision==0.22.1
+transformers==4.54.0
+pytorch_lightning==2.5.2
+datasets==4.0.0
+evo2==0.3.0
+bitsandbytes==0.46.1
+scikit-learn==1.7.1
+peft==0.16.0
+trl==0.20.0
+tensorboard==2.20.0
+deepspeed==0.17.3
+
+# FastAPI
+fastapi>=0.104.0
+uvicorn[standard]>=0.24.0
+pydantic>=2.0.0
+python-multipart>=0.0.6
+
+# It is necessary to ensure that the environment has cuda-toolkit
