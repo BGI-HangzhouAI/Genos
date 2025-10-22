@@ -1,0 +1,15 @@
+# Read the Docs configuration file
+# See https://docs.readthedocs.io/en/stable/config-file/v2.html for details
+
+# Required
+version: 2
+
+# Set the OS, Python version, and other tools you might need
+build:
+  os: macOS 15.6.1
+  tools:
+    python: "3.10.9"
+
+# Build documentation in the "docs/" directory with Sphinx
+sphinx:
+   configuration: sdk/docs/conf.py
