@@ -77,6 +77,31 @@ Genos基于Transformer架构，采用混合专家网络（Mixture-of-Experts, M
 
 ## 4. 部署及使用
 
+### docker部署
+我们强烈建议使用docker部署我们的模型，我们训练模型使用的镜像已经在dockerhub上面可以获取。
+
+1. 拉取环境
+   ```bash
+   docker pull zhanxiaoai/mega:v1 
+   ```
+2. 启动容器
+   ```bash
+   docker run -it --gpus all --shm-size 32g mega:v1 /bin/bash
+   ```
+3. 下载权重
+4. 使用
+   可以参考Notebooks里面的案例调用
+
+   - [embedding获取](Notebooks/zh/01.embedding_zh.ipynb)
+   - [种群预测](Notebooks/zh/02.Population_classify_Demo.ipynb)
+
+### API接口调用
+1. 安装Genos的SDK的包
+   ```bash
+   pip install genos-client
+   ```
+2. 接口使用详细参考[SDK使用介绍](sdk/README.md)
+
 模型权重：  
 | Model Name        | Parameters | Huggingface ckpt | Megatron ckpt |
 |-------------------|------------|----------------|---------------|
