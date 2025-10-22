@@ -1,0 +1,54 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "genos"
+version = "0.1.0"
+description = "Genos API client for accessing genomic analysis services"
+readme = "README.md"
+authors = [
+    { name = "qiuping1", email = "qiuping1@genomics.cn" },
+    { name = "chenjunhong", email = "chenjunhong@genomics.cn" },
+    { name = "tianyongjing", email = "tianyongjing@genomics.cn" }
+]
+license = { text = "MIT" }
+requires-python = ">=3.10"
+keywords = ["genomics", "variant", "prediction", "api", "client", "visualization"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering :: Bio-Informatics",
+]
+
+dependencies = [
+    "requests",
+    "numpy",
+    "matplotlib",
+    "pandas",
+    "pyfaidx",
+    "pyBigWig",
+    "torch"
+]
+
+[project.optional-dependencies]
+dev = ["black", "pytest", "flake8"]
+viz = ["matplotlib", "pandas"]
+
+[project.urls]
+Homepage = "https://github.com/yourusername/genos"
+Documentation = "https://genos.readthedocs.io/"
+Source = "https://github.com/yourusername/genos"
+Issues = "https://github.com/yourusername/genos/issues"
+
+# [project.scripts]
+# genos-client = "genos.client:main"
+
+[tool.setuptools.packages.find]
+exclude = [ "examples*"]
+
+[tool.setuptools]
+include-package-data = true
+

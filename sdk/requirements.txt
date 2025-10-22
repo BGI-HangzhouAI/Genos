@@ -1,0 +1,12 @@
+# HTTP client
+requests
+# Genomic sequence processing
+pyfaidx
+pyBigWig
+numpy
+pandas
+# Plotting
+matplotlib
+# Optional: load environment variables for token/URL
+python-dotenv
+torch
