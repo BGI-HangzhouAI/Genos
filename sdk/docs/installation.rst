@@ -5,9 +5,9 @@ From source:
 
 .. code-block::
 
-    git clone https://github.com/BGIResearch/genos.git
-    cd genos
-    python ./setup.py install
+    git clone https://github.com/BGI-HangzhouAI/Genos
+    cd sdk
+    pip install -e .
 
 
 Find out packages that lead to failures, then create a new requirements.txt of them and run:
