@@ -13,7 +13,7 @@ sys.path.insert(0, os.path.abspath('../..'))  # Assuming docs/ is inside genos/d
 project = 'Genos SDK'
 author = 'Genos Team'
 copyright = f'{datetime.now().year}, {author}'
-release = '0.1.0'
+release = '0.1.1'
 
 # -- General configuration ---------------------------------------------------
 extensions = [
