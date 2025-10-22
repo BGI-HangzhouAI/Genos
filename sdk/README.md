@@ -191,23 +191,24 @@ Complete examples are available in the [`examples/`](examples/) directory:
 
 
 
-## Primary Paper（**Replace with real information**）
+## Primary Paper 
+***Genos: A Human-Centric Genomic Foundation Model***
 
-xxx, xxx, *et al.*  
-*Genos: A Unified Foundation Model for Genomic Sequence Understanding and Variant Interpretation.（ju）*  
+Adi Lin¹, Bin Xie¹, Cheng Ye¹,Cheng Wang¹, Duoyuan Chen¹, Ercheng Wang¹, Fanfeng Lu¹, Guirong Xue¹, Haiqiang Zhang¹, Jiajie Zhan¹, Jianfeng Zhang¹, Jiangshuan Pang¹, Jianqiang Liang¹, Jiawei Lin¹, Jiaxin Ma¹, Jie Hu¹, Jing Ma¹,Jingni Dong¹, Jiongzhen Li, Junchen Liu¹, Junhong Chen¹, Junyou Li¹, Kai Ding¹, Kaiwen Deng¹, Kui Chen¹, Lihui Wang¹, Longqi Liu¹, Ling Guo¹, Liwen Xiong¹, Luhao Yang¹, Ming Cheng¹, Nanning Chen¹, Renzhong Chen¹, Shanxin Sun¹, Shaoshuai Li¹, Shicheng Chen¹, Shiping Liu¹, Siwei Xie¹, Suyan Liu¹, Tao Zhou¹, Wangyang Tang¹, Weiqiang Zhang¹, Xianyue Jiang¹, Xianzhi Qi¹, Xin Jin¹, Xinjiang Tan¹, Xinyue Hu¹, Xun Xu¹, Xuyang Feng¹, Yafei Lu¹ ,Yifan Gao¹, Yong Shang¹, Youzhe He¹, Yue Yuan¹, Yufan Wang¹, Yuqi Liu1, Zhan Xiao¹, Zhangyuan Meng¹, Zhaorong Li¹, Zhe Zhao¹, Zheng Yang¹, Zilin Wang¹
+
 _GigaScience_, 2025.  
-[https://doi.org/10.xxxx/genos.2025.12345](https://doi.org/10.xxxx/genos.2025.12345)
+[https://doi.org/10.1093/gigascience/giaf132](https://doi.org/10.1093/gigascience/giaf132)
 
 
-## How to Cite （**Replace with real information**）
+## How to Cite
 
 If you use the SDK, please include the following citation in your work:
 
 ```bibtex
 @article{he2025genos,
-  title   = {Genos: A Unified Foundation Model for Genomic Sequence Understanding and Variant Interpretation},
-  author  = {xxx},
+  title   = {Genos: A Human-Centric Genomic Foundation Model},
+  author  = {Adi Lin¹, Bin Xie¹, Cheng Ye¹,Cheng Wang¹, Duoyuan Chen¹, Ercheng Wang¹, Fanfeng Lu¹, Guirong Xue¹, Haiqiang Zhang¹, Jiajie Zhan¹, Jianfeng Zhang¹, Jiangshuan Pang¹, Jianqiang Liang¹, Jiawei Lin¹, Jiaxin Ma¹, Jie Hu¹, Jing Ma¹,Jingni Dong¹, Jiongzhen Li, Junchen Liu¹, Junhong Chen¹, Junyou Li¹, Kai Ding¹, Kaiwen Deng¹, Kui Chen¹, Lihui Wang¹, Longqi Liu¹, Ling Guo¹, Liwen Xiong¹, Luhao Yang¹, Ming Cheng¹, Nanning Chen¹, Renzhong Chen¹, Shanxin Sun¹, Shaoshuai Li¹, Shicheng Chen¹, Shiping Liu¹, Siwei Xie¹, Suyan Liu¹, Tao Zhou¹, Wangyang Tang¹, Weiqiang Zhang¹, Xianyue Jiang¹, Xianzhi Qi¹, Xin Jin¹, Xinjiang Tan¹, Xinyue Hu¹, Xun Xu¹, Xuyang Feng¹, Yafei Lu¹ ,Yifan Gao¹, Yong Shang¹, Youzhe He¹, Yue Yuan¹, Yufan Wang¹, Yuqi Liu1, Zhan Xiao¹, Zhangyuan Meng¹, Zhaorong Li¹, Zhe Zhao¹, Zheng Yang¹, Zilin Wang¹},
   journal = {GigaSience},
   year    = {2025},
-  doi     = {10.xxxx/genos.2025.12345}
+  doi     = {10.1093/gigascience/giaf132}
 }
