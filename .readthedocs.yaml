@@ -6,7 +6,7 @@ version: 2
 
 # Set the OS, Python version, and other tools you might need
 build:
-  os: macOS 15.6.1
+  os: ubuntu-24.04
   tools:
     python: "3.10.9"
 
