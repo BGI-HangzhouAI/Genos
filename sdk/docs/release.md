@@ -1,9 +1,9 @@
 Release Notes
 =============
 
-Version: v0.1.0
+Version: v0.1.1
 ---------------
-**Release Date:** Oct 10, 2025
+**Release Date:** Oct 23, 2025
 
 ### New Features
 - Initial release of **Genos SDK**.
