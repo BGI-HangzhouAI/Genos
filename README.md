@@ -2,7 +2,8 @@
 
 ![model](images/Genos_LOGO.png)
 
-[![Documentation Status](https://readthedocs.org/projects/genos-client/badge/?version=latest)](https://genos-client.readthedocs.io/en/latest/?badge=latest) [![PyPI version](https://badge.fury.io/py/genos-client.svg)](https://badge.fury.io/py/genos-client) ![Badge](https://hitscounter.dev/api/hit?url=https%3A%2F%2Fgithub.com%2FBGI-HangzhouAI%2FGenos&label=visitors&icon=github&color=%6ec044&message=&style=flat&tz=UTC)
+[![Documentation Status](https://readthedocs.org/projects/genos-client/badge/?version=latest)](https://genos-client.readthedocs.io/en/latest/?badge=latest) [![PyPI version](https://badge.fury.io/py/genos-client.svg)](https://badge.fury.io/py/genos-client) ![Badge](https://hitscounter.dev/api/hit?url=https%3A%2F%2Fgithub.com%2FBGI-HangzhouAI%2FGenos&label=visitors&icon=github&color=%6ec044&message=&style=flat&tz=UTC) [![Collection](https://img.shields.io/badge/🤗-Genos%20%20Collection-blue)](https://huggingface.co/collections/BGI-HangzhouAI/genos)
+
 
 ## 1. 目录
 
