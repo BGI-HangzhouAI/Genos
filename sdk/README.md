@@ -46,7 +46,7 @@ pip install -e .
 
 ### Install from Pypi
 ```bash
-pip install genos
+pip install genos-client
 ```
 
 ### Requirements
