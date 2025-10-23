@@ -96,7 +96,7 @@ Genos基于Transformer架构，采用混合专家网络（Mixture-of-Experts, M
    可以参考Notebooks里面的案例调用
 
    - [embedding获取](Notebooks/zh/01.embedding_zh.ipynb)
-   - [种群预测](Notebooks/zh/02.Population_classify_Demo.ipynb)
+   - [族群预测](Notebooks/zh/02.Population_classify_Demo.ipynb)
 
 ### API接口调用
 1. 安装Genos的SDK的包
