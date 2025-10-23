@@ -92,7 +92,7 @@ Genos基于Transformer架构，采用混合专家网络（Mixture-of-Experts, M
    docker run -it --gpus all --shm-size 32g mega:v1 /bin/bash
    ```
 3. 下载权重
-4. 使用
+4. 使用  
    可以参考Notebooks里面的案例调用
 
    - [embedding获取](Notebooks/zh/01.embedding_zh.ipynb)
