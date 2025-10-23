@@ -91,7 +91,15 @@ Genos基于Transformer架构，采用混合专家网络（Mixture-of-Experts, M
    ```bash
    docker run -it --gpus all --shm-size 32g mega:v1 /bin/bash
    ```
-3. 下载权重
+3. 下载权重  
+
+
+| Model Name        | Parameters | Huggingface ckpt | Megatron ckpt |
+|-------------------|------------|----------------|---------------|
+| `Genos-1.2B`  | 1.2B       |  [Genos-1.2B](https://huggingface.co/BGI-HangzhouAI/Genos-1.2B) |  [Genos-Megatron-1.2B](https://huggingface.co/BGI-HangzhouAI/Genos-Megatron-1.2B) |
+| `Genos-10B`       | 10B        |  [Genos-10B](https://huggingface.co/BGI-HangzhouAI/Genos-10B)   |  [Genos-Megatron-10B](https://huggingface.co/BGI-HangzhouAI/Genos-Megatron-10B)   |
+
+
 4. 使用  
    可以参考Notebooks里面的案例调用
 
@@ -105,11 +113,6 @@ Genos基于Transformer架构，采用混合专家网络（Mixture-of-Experts, M
    ```
 2. 接口使用详细参考[SDK使用介绍](sdk/README.md)
 
-模型权重：  
-| Model Name        | Parameters | Huggingface ckpt | Megatron ckpt |
-|-------------------|------------|----------------|---------------|
-| `Genos-1.2B`  | 1.2B       |  [Genos-1.2B](https://huggingface.co/BGI-HangzhouAI/Genos-1.2B) |  [Genos-Megatron-1.2B](https://huggingface.co/BGI-HangzhouAI/Genos-Megatron-1.2B) |
-| `Genos-10B`       | 10B        |  [Genos-10B](https://huggingface.co/BGI-HangzhouAI/Genos-10B)   |  [Genos-Megatron-10B](https://huggingface.co/BGI-HangzhouAI/Genos-Megatron-10B)   |
 
 
 ## 5. 性能测评
