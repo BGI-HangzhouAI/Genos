@@ -226,7 +226,7 @@ seed=42
 09/23/2025 01:29:51 - INFO - root - 🌐 wandb: Logged in as: beneldor-zhejiang-lab
 09/23/2025 01:29:51 - INFO - root - 📊 Project: RNA-Seq_Coverage_Track | Run Name: bs256_chr19_track27_epoch20_one-hot-mix-1.2b-128k_flash_attn-pai_mse_0923_dlc
 09/23/2025 01:29:51 - INFO - root - 🚀 Run URL: None
-09/23/2025 01:29:51 - INFO - root - 💾 Local Dir: /mnt/workspace/users/yecheng/RNASeqCoverageTrackPrediction_single-track/wandb/offline-run-20250923_012951-w0sac55n/files
+09/23/2025 01:29:51 - INFO - root - 💾 Local Dir: /your/path/RNASeqCoverageTrackPrediction_single-track/wandb/offline-run-20250923_012951-w0sac55n/files
 09/23/2025 01:29:51 - INFO - root - 🚀 加载预训练模型和分词器...
 09/23/2025 01:29:51 - INFO - root - ⚡ 使用 Flash Attention
 09/23/2025 01:29:51 - INFO - root - 🧬 训练染色体: ['chr19']
