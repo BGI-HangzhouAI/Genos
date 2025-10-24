@@ -564,4 +564,4 @@ This work advocates the open sharing of biological AI community and s
 
 ## 9. Contact Us
 
-If you have questions or cooperation intention,Feel free to contact us. Email: bgi-Genos@genomics.cn
+If you have questions or cooperation intention,Feel free to contact us. Email: Genos@genomics.cn
