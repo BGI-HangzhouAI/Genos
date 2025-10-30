@@ -259,6 +259,7 @@ Genos-10B: BGI-HangzhouAI/Genos-10B
 我们测评中所用的数据集正在整理中，即将上线，敬请期待。
 
 ## 8. Citation引用说明
+
 （1）GigaScience paper: Genos: A Human-Centric Genomic Foundation Model, GigaScience, 2025, https://doi.org/10.1093/gigascience/giaf132
 
 ## 9. Licence 说明
