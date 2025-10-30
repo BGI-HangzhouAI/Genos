@@ -258,11 +258,14 @@ Genos-10B: BGI-HangzhouAI/Genos-10B
 
 我们测评中所用的数据集正在整理中，即将上线，敬请期待。
 
-## 8. Licence 说明
+## 8. Citation引用说明
+（1）GigaScience paper: Genos: A Human-Centric Genomic Foundation Model, GigaScience, 2025, https://doi.org/10.1093/gigascience/giaf132
+
+## 9. Licence 说明
 
 本工作倡导生物AI社区的开放共享，支持MIT License。
 
-## 9. 联系我们
+## 10. 联系我们
 
 如果您疑问或合作意向，欢迎联系我们。 邮箱: Genos@genomics.cn
 
