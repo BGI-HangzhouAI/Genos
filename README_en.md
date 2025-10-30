@@ -159,13 +159,18 @@ See [Document](Documents/README.md#case-1-rna-seq-data-generation) for full trai
 
 ## Citation
 If you use Genos in your research, please cite:
-
-```bibtex
-@article{Genos2025,
-  title={Genos: A Human-Centric Genomic Foundation Model},
-  author={Genos team，Hangzhou，China},
-  journal={Preprint},
-  year={2025}
+```
+@article{10.1093/gigascience/giaf132,
+    author = {Genos Team, Hangzhou, China},
+    title = {Genos: A Human-Centric Genomic Foundation Model},
+    journal = {GigaScience},
+    pages = {giaf132},
+    year = {2025},
+    month = {10},
+    issn = {2047-217X},
+    doi = {10.1093/gigascience/giaf132},
+    url = {https://doi.org/10.1093/gigascience/giaf132},
+    eprint = {https://academic.oup.com/gigascience/advance-article-pdf/doi/10.1093/gigascience/giaf132/64848789/giaf132.pdf},
 }
 ```
 
