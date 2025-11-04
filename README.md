@@ -238,15 +238,15 @@ Genos模拟生成多细胞类型RNA-seq表达量与真实测序结果结果相�
 
 模型说明：
 
-NT-2.5b-multi：InstaDeepAI/nucleotide-transformer-v2-500m-multi-species
+NT-2.5b-multi：[InstaDeepAI/nucleotide-transformer-2.5b-multi-species](https://huggingface.co/InstaDeepAI/nucleotide-transformer-2.5b-multi-species)
 
-Evo2-1b：arcinstitute/evo2\_1b\_base
+Evo2-1b：[arcinstitute/evo2\_1b\_base](https://huggingface.co/arcinstitute/evo2_1b_base)
 
-HyenaDna-1m: LongSafari/hyenadna-large-1m-seqlen
+HyenaDna-1m: [LongSafari/hyenadna-large-1m-seqlen](https://huggingface.co/LongSafari/hyenadna-large-1m-seqlen)
 
-Genos-1.2B: BGI-HangzhouAI/Genos-1.2B
+Genos-1.2B: [BGI-HangzhouAI/Genos-1.2B](https://huggingface.co/BGI-HangzhouAI/Genos-1.2B)
 
-Genos-10B: BGI-HangzhouAI/Genos-10B
+Genos-10B: [BGI-HangzhouAI/Genos-10B](https://huggingface.co/BGI-HangzhouAI/Genos-10B)
 
 021-8B: 021 Science Foundation Model-8B is a large language model trained on extensive scientific corpora with profound scientific cognition. It is scheduled to be released at a later date. 
 
