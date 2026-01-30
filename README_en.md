@@ -51,10 +51,13 @@
 
 ## Updates
 
-- Released Genos-10B-v2 model: `Genos-10B-v2`.
-- v2 updates: Introduced non-human primate and multiple mammalian genomes, adopting a phased, 1:1 mixing strategy to enhance cross-species generalization and evolutionary context modeling.
-- New evaluations: (1) Cross-species generalization capability; (2) Ultra-long context tasks added.
-- Inference optimization provides vLLM image; optional adaptation for domestic hardware such as Huawei and MuXi.
+- **2026.01.30** | Released [Gengram](https://github.com/BGI-HangzhouAI/Gengram) — a retrieval-augmented genomic foundation model featuring explicit motif memory, efficient hash-based k-mer lookup, and enhanced biological interpretability. 🚀 Explore it and see how it transforms genomic modeling！
+- **2025.12.25** | Added [NTv3-650M-Pre](https://huggingface.co/InstaDeepAI/NTv3_650M_pre) as a new competitor model in the Performance Evaluation section. Stay tuned to see how it performs against our Genos-10B-v2 model!
+- **2025.12.18** | Released Genos-10B-v2 model: `Genos-10B-v2`.
+  - v2 updates: Introduced non-human primate and multiple mammalian genomes, adopting a phased, 1:1 mixing strategy to enhance cross-species generalization and evolutionary context modeling.
+  - New evaluations: (1) Cross-species generalization capability; (2) Ultra-long context tasks added.
+  
+  - Inference optimization provides vLLM image; optional adaptation for domestic hardware such as Huawei and MuXi.
 
 ## Model Introduction
 

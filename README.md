@@ -51,6 +51,8 @@
 
 ## 更新速览
 
+- 2026.01.30: 发布 [Gengram](https://github.com/BGI-HangzhouAI/Gengram)：检索增强的基因组基础模型，引入显式 motif memory、哈希加速的 k-mer 检索与更强的生物学可解释性。🚀 欢迎体验，看看它如何推动基因组建模。
+
 - 2025.12.25: 新增竞品模型`NTv3-650M-Pre`
 
 - 2025.12.18: Genos发布10B模型升级版本：[Genos-10B-v2](https://huggingface.co/BGI-HangzhouAI/Genos-10B-v2)
