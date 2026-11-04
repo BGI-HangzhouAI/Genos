@@ -11,6 +11,11 @@ import torch
 # 设置日志
 logger = logging.getLogger(__name__)
 
+# 网关注册名用下划线。调用方仍传 Genos-1.2B。
+REQUEST_MODEL_NAMES = {
+    "Genos-1.2B": "Genos-1_2B",
+}
+
 
 class EmbeddingExtractorAPI(BaseAPI):
     """Wrapper class for the Embedding Extraction API endpoints.
@@ -19,7 +24,7 @@ class EmbeddingExtractorAPI(BaseAPI):
     including single sequence and batch processing.
     """
     
-    def __init__(self, session: requests.Session, base_url: str, timeout: int = 30, config=None):
+    def __init__(self, session: requests.Session, base_url: str, timeout: int = 30, model: str = "Genos-1.2B", config=None):
         """
         Initialize the EmbeddingExtractorAPI client.
         
@@ -27,20 +32,26 @@ class EmbeddingExtractorAPI(BaseAPI):
             session (requests.Session): Reusable HTTP session for API requests.
             base_url (str): Base URL of the Genos service.
             timeout (int, optional): Request timeout in seconds. Default is 30.
-            config (GenosConfig, optional): Configuration object for endpoint management.
+            model (str, optional): Default value for the request field ``model``
+                when ``model_name`` is omitted. Default is "Genos-1.2B".
+            config (GenosConfig, optional): Unused. The base URL is already the full endpoint.
         """
         super().__init__(session, base_url, timeout)
+        self.model = model
         self.config = config
     
-    def extract(self, sequence: str, model_name: str = "Genos-1.2B",
+    def extract(self, sequence: str, model_name: str = None,
                 pooling_method: str = "mean") -> Union[dict, List[dict]]:
         """
         Extracts a numerical embedding representation for a given nucleotide sequence.
 
+        ``model_name`` is sent unchanged. The gateway field ``model`` uses the
+        registered name, so ``Genos-1.2B`` is sent as ``model="Genos-1_2B"``.
+
         Args:
             sequence (str ): DNA sequence string .
-            model_name (str, optional): Model name to use. Default is "Genos-1.2B".
-                Options: "Genos-1.2B", "Genos-10B"
+            model_name (str, optional): Sent as ``model_name``. Default is "Genos-1.2B".
+                Options: "Genos-1.2B", "Genos-10B", "Genos-10B-v2".
             pooling_method (str, optional): Pooling method. Default is "mean".
                 Options: "mean", "max", "last", "none"
 
@@ -68,7 +79,7 @@ class EmbeddingExtractorAPI(BaseAPI):
             return self._extract_single(sequence, model_name, pooling_method)
         else:
             raise ValueError("sequence must be a string or list of strings")
-    
+
     def _extract_single(self, sequence: str, model_name: str, pooling_method: str) -> dict:
         """内部方法：提取单个序列"""
         # Validate input
@@ -78,19 +89,14 @@ class EmbeddingExtractorAPI(BaseAPI):
         # Check sequence length limit (128K characters)
         if len(sequence) > 128000:
             raise ValidationError("sequence length cannot exceed 128,000 bases")
-        
-        # Prepare request
-        # 从配置获取端点路径
-        if self.config:
-            endpoint = self.config.get_endpoint("embedding.extract")
-        else:
-            endpoint = ""  # 默认值（向后兼容）
-        
-        url = f"{self.base_url}{endpoint}"
+
+        weight = model_name or self.model
+        url = self.base_url
         payload = {
+            "model": REQUEST_MODEL_NAMES.get(weight, weight),
+            "model_name": weight,
             "sequence": sequence,
-            "model_name": model_name,
-            "pooling_method": pooling_method
+            "pooling_method": pooling_method,
         }
         
         # Start timing
@@ -98,21 +104,24 @@ class EmbeddingExtractorAPI(BaseAPI):
         
         # Use the base class method for request handling with token validation
         data = self._make_request('POST', url, json=payload)
+        body_status = data.get("status") if isinstance(data, dict) else None
+        if body_status not in (None, 200, "200"):
+            message = None
+            if isinstance(data, dict):
+                message = data.get("messages") or data.get("message")
+            raise APIRequestError(
+                f"API request failed: {message or 'embedding request failed'}",
+                body_status,
+            )
         
-        # Calculate elapsed time
         elapsed_time = time.time() - start_time
-        
-        # Check response status - new format has 'status' field
-        # if data.get("status") != 200:
-        #     error_msg = data.get("messages", "Unknown API error")
-        #     raise APIRequestError(f"API request failed: {error_msg}")
-        
         embedding = torch.tensor(data["result"]["embedding"])
         data["result"]["embedding"] = embedding
         # Print elapsed time to screen
         logger.info(f"⏱️  Embedding extraction completed in {elapsed_time:.4f}s "
                    f"(sequence_length={data.get('sequence_length', 'N/A')})")
-        res = {}
-        for key in ("result", "status", "message"):
-            res[key] = data.get(key)
-        return res
+        return {
+            "result": data.get("result"),
+            "status": data.get("status", 200),
+            "message": data.get("message") or data.get("messages"),
+        }

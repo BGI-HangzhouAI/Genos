@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+import json
 import requests
 from abc import ABC, abstractmethod
 from ..exceptions import APIRequestError, PaymentInsufficientError, AuthenticationError
@@ -31,6 +32,29 @@ class BaseAPI(ABC):
         self.session = session
         self.base_url = base_url.rstrip("/")
         self.timeout = timeout
+
+    def _error_message(self, error_data, status_code: int) -> str:
+        """Read messages, message, or the aigress error.message field."""
+        if not isinstance(error_data, dict):
+            return f"HTTP {status_code} error"
+        error = error_data.get("error")
+        if isinstance(error, dict):
+            nested = error.get("message") or error.get("messages")
+            if nested:
+                return str(nested)
+        if isinstance(error, str) and error:
+            return error
+        for key in ("messages", "message"):
+            value = error_data.get(key)
+            if isinstance(value, str) and value:
+                return value
+        try:
+            preview = json.dumps(error_data, ensure_ascii=False)
+        except TypeError:
+            preview = str(error_data)
+        if len(preview) > 300:
+            preview = preview[:300] + "..."
+        return preview or f"HTTP {status_code} error"
     
     def _validate_response(self, response: requests.Response) -> dict:
         """
@@ -58,7 +82,7 @@ class BaseAPI(ABC):
             # Error responses - print error info and raise exception
             try:
                 error_data = response.json()
-                error_message = error_data.get('messages', error_data.get('message', f'HTTP {status_code} error'))
+                error_message = self._error_message(error_data, status_code)
             except:
                 error_message = f'HTTP {status_code} error'
             

@@ -3,8 +3,8 @@ requires = ["setuptools>=61.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "genos"
-version = "0.1.0"
+name = "genos-client"
+version = "1.0.2"
 description = "Genos API client for accessing genomic analysis services"
 readme = "README.md"
 authors = [
@@ -47,8 +47,13 @@ Issues = "https://github.com/yourusername/genos/issues"
 # genos-client = "genos.client:main"
 
 [tool.setuptools.packages.find]
+where = ["."]
+include = ["genos", "genos.*"]
 exclude = [ "examples*"]
 
 [tool.setuptools]
 include-package-data = true
+
+[tool.setuptools.package-data]
+genos = ["data/*"]
 

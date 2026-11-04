@@ -44,6 +44,19 @@ class ValidationError(GenosError):
     pass
 
 
+class PackageUpdateRequired(GenosError):
+    """Raised when the scoring service rejects this client version.
+
+    The server keeps an allowlist of genos package versions. Older packages
+    receive the same notice in ``result`` and ``message`` so existing callers
+    can see that they need to upgrade.
+    """
+
+    def __init__(self, message: str, client_version: str = None):
+        super().__init__(message)
+        self.client_version = client_version
+
+
 class PaymentInsufficientError(GenosError):
     """Raised when the user's account has insufficient payment/credits for the API request.
 

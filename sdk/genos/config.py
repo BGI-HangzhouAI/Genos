@@ -2,6 +2,10 @@
 # -*- coding: utf-8 -*-
 import os
 
+# variant 的 model 是网关服务名。embedding 的 model_name 会原样写进请求体的 model 字段。
+DEFAULT_VARIANT_MODEL = "Genos_Variant"
+DEFAULT_EMBEDDING_MODEL = "Genos-1.2B"
+
 
 class GenosConfig:
     """
@@ -15,20 +19,17 @@ class GenosConfig:
         - GENOS_API_URL_EMBEDDING
         - GENOS_API_URL_RNA
         - GENOS_API_TOKEN
-
-    Example:
-        >>> cfg = GenosConfig()
-        >>> cfg.get_api_url("mutation")
-        'https://mutation.geneos.ai/v1/predict'
+        - GENOS_VARIANT_MODEL
+        - GENOS_EMBEDDING_MODEL
     """
 
     DEFAULT_API_MAP = {
-        "variant": "https://cloud.stomics.tech/api/aigateway/genos/variant_predict",
-        "embedding": "https://cloud.stomics.tech/api/aigateway/genos/embedding",
-        "rna": "https://cloud.stomics.tech/api/aigateway/genos/rna_seq_coverage_track",
+        "variant": "https://www.dcs.cloud/api/aigress/openai/predict/",
+        "embedding": "https://www.dcs.cloud/api/aigress/openai/dna_embedding",
+        "rna": "https://www.dcs.cloud/api/aigateway/genos/rna_seq_gen",
     }
 
-    def __init__(self, token=None, timeout=30, api_map=None):
+    def __init__(self, token=None, timeout=30, api_map=None, variant_model=None, embedding_model=None):
         """
         Initialize the configuration.
 
@@ -41,6 +42,16 @@ class GenosConfig:
         """
         self.token = token or os.getenv("GENOS_API_TOKEN")
         self.timeout = timeout
+        self.variant_model = (
+            variant_model
+            or os.getenv("GENOS_VARIANT_MODEL")
+            or DEFAULT_VARIANT_MODEL
+        )
+        self.embedding_model = (
+            embedding_model
+            or os.getenv("GENOS_EMBEDDING_MODEL")
+            or DEFAULT_EMBEDDING_MODEL
+        )
 
         # 合并默认与自定义映射
         self.api_map = {**self.DEFAULT_API_MAP, **(api_map or {})}

@@ -3,7 +3,9 @@
 # Genos
 
 [**Get API key**](#get-api-key) |
-[**Quick start**](#quick-start) 
+[**Quick start**](#quick-start) | 
+[**Documentation, replace the real url**](xxx) |
+[**Terms of Use, replace the real url**](xxx)
 
 **Genos** is a Python SDK for accessing genomic analysis models through the GeneOS platform. It provides a unified interface for variant pathogenicity prediction, DNA sequence embedding extraction, RNA-seq coverage track prediction, and genomic visualization.
 
@@ -37,24 +39,19 @@ To use Genos, you need an API key from the DCS Cloud.
 * You can **manually deactivate** your key in the control panel at any time.
 
 ## Installation
-### Install from Source
-```bash
-git clone https://github.com/BGI-HangzhouAI/Genos.git
-cd sdk
-pip install -e .
-```
-
-### Install from Pypi
-```bash
-pip install genos-client
-```
 
 ### Requirements
 
 - Python 3.8 or higher
 - pip package manager
 
+### Install from Source
 
+```bash
+git clone https://github.com/qiupinghust/genos.git
+cd genos
+pip install -e .
+```
 
 ## Quick Start
 
@@ -75,14 +72,16 @@ client = create_client(token="your_api_token_here")
 Predict whether a genetic variant is pathogenic or benign:
 
 ```python
-# Predict variant pathogenicity
-result = client.variant_predict("hg19", "chr6", 51484075, "T", "G")['result']
+# Predict variant pathogenicity on GRCh38.
+# score is the published fusion score (p_fusion).
+result = client.variant_predict("hg38", "chr6", 51484075, "T", "G")["result"]
 
 print(f"Variant: {result['variant']}")
 print(f"Prediction: {result['prediction']}")
-print(f"Pathogenic Score: {result['score_Pathogenic']:.4f}")
-print(f"Benign Score: {result['score_Benign']:.4f}")
+print(f"Published score: {result['score']:.4f}")
 ```
+
+Package 1.0.2 sends its version with every variant request. If the scoring service does not allow that version, the call raises `PackageUpdateRequired`. Older installs do not send a version; the service returns the upgrade text in `result` and `message`, which those installs pass back to the caller.
 
 ### 2. DNA Sequence Embedding Extraction
 
@@ -191,24 +190,23 @@ Complete examples are available in the [`examples/`](examples/) directory:
 
 
 
-## Primary Paper 
-***Genos: A Human-Centric Genomic Foundation Model***
+## Primary Paper（**Replace with real information**）
 
-Adi Lin¹, Bin Xie¹, Cheng Ye¹,Cheng Wang¹, Duoyuan Chen¹, Ercheng Wang¹, Fanfeng Lu¹, Guirong Xue¹, Haiqiang Zhang¹, Jiajie Zhan¹, Jianfeng Zhang¹, Jiangshuan Pang¹, Jianqiang Liang¹, Jiawei Lin¹, Jiaxin Ma¹, Jie Hu¹, Jing Ma¹,Jingni Dong¹, Jiongzhen Li, Junchen Liu¹, Junhong Chen¹, Junyou Li¹, Kai Ding¹, Kaiwen Deng¹, Kui Chen¹, Lihui Wang¹, Longqi Liu¹, Ling Guo¹, Liwen Xiong¹, Luhao Yang¹, Ming Cheng¹, Nanning Chen¹, Renzhong Chen¹, Shanxin Sun¹, Shaoshuai Li¹, Shicheng Chen¹, Shiping Liu¹, Siwei Xie¹, Suyan Liu¹, Tao Zhou¹, Wangyang Tang¹, Weiqiang Zhang¹, Xianyue Jiang¹, Xianzhi Qi¹, Xin Jin¹, Xinjiang Tan¹, Xinyue Hu¹, Xun Xu¹, Xuyang Feng¹, Yafei Lu¹ ,Yifan Gao¹, Yong Shang¹, Youzhe He¹, Yue Yuan¹, Yufan Wang¹, Yuqi Liu1, Zhan Xiao¹, Zhangyuan Meng¹, Zhaorong Li¹, Zhe Zhao¹, Zheng Yang¹, Zilin Wang¹
-
+xxx, xxx, *et al.*  
+*Genos: A Unified Foundation Model for Genomic Sequence Understanding and Variant Interpretation.（ju）*  
 _GigaScience_, 2025.  
-[https://doi.org/10.1093/gigascience/giaf132](https://doi.org/10.1093/gigascience/giaf132)
+[https://doi.org/10.xxxx/genos.2025.12345](https://doi.org/10.xxxx/genos.2025.12345)
 
 
-## How to Cite
+## How to Cite （**Replace with real information**）
 
 If you use the SDK, please include the following citation in your work:
 
 ```bibtex
 @article{he2025genos,
-  title   = {Genos: A Human-Centric Genomic Foundation Model},
-  author  = {Adi Lin¹, Bin Xie¹, Cheng Ye¹,Cheng Wang¹, Duoyuan Chen¹, Ercheng Wang¹, Fanfeng Lu¹, Guirong Xue¹, Haiqiang Zhang¹, Jiajie Zhan¹, Jianfeng Zhang¹, Jiangshuan Pang¹, Jianqiang Liang¹, Jiawei Lin¹, Jiaxin Ma¹, Jie Hu¹, Jing Ma¹,Jingni Dong¹, Jiongzhen Li, Junchen Liu¹, Junhong Chen¹, Junyou Li¹, Kai Ding¹, Kaiwen Deng¹, Kui Chen¹, Lihui Wang¹, Longqi Liu¹, Ling Guo¹, Liwen Xiong¹, Luhao Yang¹, Ming Cheng¹, Nanning Chen¹, Renzhong Chen¹, Shanxin Sun¹, Shaoshuai Li¹, Shicheng Chen¹, Shiping Liu¹, Siwei Xie¹, Suyan Liu¹, Tao Zhou¹, Wangyang Tang¹, Weiqiang Zhang¹, Xianyue Jiang¹, Xianzhi Qi¹, Xin Jin¹, Xinjiang Tan¹, Xinyue Hu¹, Xun Xu¹, Xuyang Feng¹, Yafei Lu¹ ,Yifan Gao¹, Yong Shang¹, Youzhe He¹, Yue Yuan¹, Yufan Wang¹, Yuqi Liu1, Zhan Xiao¹, Zhangyuan Meng¹, Zhaorong Li¹, Zhe Zhao¹, Zheng Yang¹, Zilin Wang¹},
+  title   = {Genos: A Unified Foundation Model for Genomic Sequence Understanding and Variant Interpretation},
+  author  = {xxx},
   journal = {GigaSience},
   year    = {2025},
-  doi     = {10.1093/gigascience/giaf132}
+  doi     = {10.xxxx/genos.2025.12345}
 }

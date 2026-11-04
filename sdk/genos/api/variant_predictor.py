@@ -1,11 +1,13 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+import json
 import requests
 import time
 import logging
 from .health import BaseAPI
-from ..exceptions import APIRequestError
+from ..exceptions import APIRequestError, PackageUpdateRequired
+from ..version import __version__
 
 logger = logging.getLogger(__name__)
 
@@ -24,6 +26,154 @@ def check_chromosome(chrom: str) -> bool:
     return chrom in CHROMOSOMES
 
 
+def _json_container(value):
+    if isinstance(value, str):
+        text = value.strip()
+        if not text or text[0] not in "{[":
+            return None
+        try:
+            return json.loads(text)
+        except json.JSONDecodeError:
+            return None
+    return value
+
+
+def _iter_mappings(value):
+    value = _json_container(value)
+    if isinstance(value, dict):
+        yield value
+        for item in value.values():
+            yield from _iter_mappings(item)
+    elif isinstance(value, list):
+        for item in value:
+            yield from _iter_mappings(item)
+
+
+def _error_text(data, status_code) -> str:
+    """Read a gateway error from messages, message, or error.message."""
+    if not isinstance(data, dict):
+        return f"HTTP {status_code} error"
+    error = data.get("error")
+    if isinstance(error, dict):
+        nested = error.get("message") or error.get("messages")
+        if nested:
+            return str(nested)
+    if isinstance(error, str) and error:
+        return error
+    for key in ("messages", "message"):
+        value = data.get(key)
+        if isinstance(value, str) and value:
+            return value
+    return f"HTTP {status_code} error"
+
+
+def _response_preview(data) -> str:
+    try:
+        text = json.dumps(data, ensure_ascii=False, default=str)
+    except TypeError:
+        text = str(data)
+    if len(text) > 500:
+        return text[:500] + "..."
+    return text
+
+
+def _upgrade_text(value) -> str | None:
+    if not isinstance(value, str):
+        return None
+    markers = ("不在允许列表", "请将 genos", "Please update the genos package", "update_required")
+    if any(marker in value for marker in markers):
+        return value
+    return None
+
+
+def update_required_message(data: dict):
+    """Return the server upgrade notice, or None when the call may proceed."""
+    if not isinstance(data, dict):
+        return None
+    if data.get("update_required"):
+        message = data.get("message") or data.get("messages") or data.get("result")
+        if isinstance(message, dict):
+            message = message.get("message") or message.get("prediction")
+        return message or "请更新 genos 包后再调用变异预测。"
+    for mapping in _iter_mappings(data):
+        if mapping.get("update_required"):
+            return (
+                mapping.get("message")
+                or mapping.get("prediction")
+                or data.get("message")
+                or data.get("messages")
+                or "请更新 genos 包后再调用变异预测。"
+            )
+        for key in ("message", "messages", "prediction", "variant"):
+            notice = _upgrade_text(mapping.get(key))
+            if notice:
+                return notice
+    return None
+
+
+def _as_score(value):
+    if isinstance(value, bool) or value is None:
+        return None
+    if isinstance(value, (int, float)):
+        return float(value)
+    if isinstance(value, str):
+        try:
+            return float(value)
+        except ValueError:
+            return None
+    return None
+
+
+def _score_source(data: dict):
+    """Prefer the new published fusion score, then the gateway's pathogenic score."""
+    mappings = list(_iter_mappings(data))
+    for mapping in mappings:
+        if _as_score(mapping.get("p_fusion")) is not None:
+            return mapping
+    for mapping in mappings:
+        if _as_score(mapping.get("score_Pathogenic")) is not None:
+            return mapping
+    return None
+
+
+def published_variant_result(data: dict) -> dict:
+    """Read a published score from either the new or the gateway response.
+
+    The new service returns ``p_fusion``. The Stomics gateway currently returns
+    ``result.score_Pathogenic`` and ``result.score_Benign`` inside
+    ``{result, status, messages}``. ``score`` is the pathogenic probability
+    from whichever of those is present.
+    """
+    source = _score_source(data)
+    if source is None:
+        raise APIRequestError(
+            "响应里没有 published score（p_fusion 或 score_Pathogenic）。"
+            f"实际返回：{_response_preview(data)}"
+        )
+    p_fusion = _as_score(source.get("p_fusion"))
+    score_pathogenic = _as_score(source.get("score_Pathogenic"))
+    if p_fusion is None:
+        p_fusion = score_pathogenic
+    if score_pathogenic is None:
+        score_pathogenic = p_fusion
+    return {
+        "variant": source.get("variant"),
+        "chromosome": source.get("chromosome"),
+        "position": source.get("position"),
+        "ref": source.get("ref"),
+        "alt": source.get("alt"),
+        "prediction": source.get("prediction"),
+        "p_mlp": _as_score(source.get("p_mlp")),
+        "p_evee": _as_score(source.get("p_evee")),
+        "p_fusion": p_fusion,
+        "score": p_fusion,
+        "score_Pathogenic": score_pathogenic,
+        "score_Benign": _as_score(source.get("score_Benign")),
+        "fusion_threshold": _as_score(source.get("fusion_threshold")),
+        "elapsed_ms": source.get("elapsed_ms"),
+    }
+
+
 def check_position(assembly: str, chrom: str, pos: int) -> bool:
     """
     Check if the position is valid.
@@ -40,7 +190,7 @@ class VariantPredictorAPI(BaseAPI):
     SDK exceptions on errors.
     """
 
-    def __init__(self, session: requests.Session, base_url: str, timeout: int = 30):
+    def __init__(self, session: requests.Session, base_url: str, timeout: int = 30, model: str = "Genos_Variant"):
         """
         Initialize the VariantPredictorAPI client.
 
@@ -50,34 +200,38 @@ class VariantPredictorAPI(BaseAPI):
             timeout (int, optional): Request timeout in seconds. Default is 30.
         """
         super().__init__(session, base_url, timeout)
+        self.model = model
 
-    def predict(self, assembly: str, chrom: str, pos: int, ref: str, alt: str) -> dict:
+    def predict(self, assembly: str = "hg38", chrom: str = None, pos: int = None, ref: str = None, alt: str = None, model: str = None) -> dict:
         """
         Predict the pathogenicity of a genetic variant.
         
         Args:
-            assembly (str): Reference genome version, allowed values: 'hg38' or 'hg19'.
+            assembly (str): Reference genome. Only ``'hg38'`` is accepted. Default: ``'hg38'``.
             chrom (str): Chromosome, e.g., 'chr6'.
             pos (int): Position, 1-based coordinate.
             ref (str): Reference allele, single letter or sequence.
             alt (str): Alternate allele, single letter or sequence.
 
         Returns:
-            dict: Prediction result, typically containing:
-                - "variant": input variant
-                - "prediction": "Pathogenic" or "Benign"
-                - "score_Benign": float
-                - "score_Pathogenic": float
+            dict: ``{"result", "status", "message"}``. ``result["score"]`` is the
+            published fusion score (``p_fusion``). ``result`` also includes
+            ``p_mlp`` and ``p_evee``.
 
         Raises:
             ValueError: If any argument is invalid.
+            PackageUpdateRequired: If this package version is not allowed.
             APIRequestError: If the API request fails or the server returns an error.
         """
-        # Validate assembly
-        allowed_assemblies = ["hg38", "hg19"]
-        if assembly not in allowed_assemblies:
-            raise ValueError(f"assembly must be one of {allowed_assemblies}, but got '{assembly}'")
-        
+        if assembly is None:
+            assembly = "hg38"
+        if str(assembly).strip().lower() != "hg38":
+            raise ValueError(f"assembly must be 'hg38', but got '{assembly}'")
+        assembly = "hg38"
+
+        if chrom is None or pos is None or ref is None or alt is None:
+            raise ValueError("chrom, pos, ref and alt are required")
+
         # Validate chromosome
         if not check_chromosome(chrom):
             raise ValueError(f"Invalid chromosome: {chrom}. Allowed: {', '.join(CHROMOSOMES)}")
@@ -97,28 +251,45 @@ class VariantPredictorAPI(BaseAPI):
         # Prepare payload with individual parameters
         url = f"{self.base_url}"
         payload = {
+            "model": model or self.model,
             "assembly": assembly,
             "chrom": chrom,
             "pos": pos,
             "ref": ref.upper(),
-            "alt": alt.upper()
+            "alt": alt.upper(),
+            "client_version": __version__,
         }
 
         start_time = time.time()
+        try:
+            response = self.session.post(url, json=payload, timeout=self.timeout)
+        except requests.RequestException as exc:
+            raise APIRequestError(f"Network request failed: {exc}") from exc
 
-        # Use the base class method for request handling with token validation
-        data = self._make_request('POST', url, json=payload)
+        try:
+            data = response.json()
+        except ValueError as exc:
+            raise APIRequestError(f"API response is not valid JSON: {exc}") from exc
+        notice = update_required_message(data)
+        if notice:
+            raise PackageUpdateRequired(str(notice), __version__)
 
+        body_status = data.get("status") if isinstance(data, dict) else None
+        if response.status_code == 200 and body_status not in (None, 200, "200"):
+            error_message = _error_text(data, body_status)
+            raise APIRequestError(f"API request failed: {error_message}", body_status)
+
+        if response.status_code != 200:
+            error_message = _error_text(data, response.status_code)
+            print(f"❌ API Error - Status Code: {response.status_code}")
+            print(f"❌ Error Message: {error_message}")
+            raise APIRequestError(f"API request failed: {error_message}", response.status_code)
+
+        result = published_variant_result(data)
         elapsed_time = time.time() - start_time
-
-        # Check response status - new format has 'status' field
-        # if data.get("status") != 200:
-        #     error_msg = data.get("messages", "Unknown API error")
-        #     raise APIRequestError(f"API request failed: {error_msg}")
-
         logger.info(f"Variant prediction completed in {elapsed_time:.4f}s ")
-
-        res = {}
-        for key in ("result", "status", "message"):
-            res[key] = data.get(key)
-        return res
+        return {
+            "result": result,
+            "status": data.get("status", 200),
+            "message": data.get("message") or data.get("messages") or "ok",
+        }

@@ -4,4 +4,3 @@ nbsphinx
 nbsphinx_link
 recommonmark
 myst-parser
-genos-client

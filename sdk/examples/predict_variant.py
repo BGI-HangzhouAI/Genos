@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 from genos import create_client
-from genos.exceptions import APIRequestError, ValidationError
+from genos.exceptions import APIRequestError, PackageUpdateRequired, ValidationError
 
 def main():
     # Create client with your API token
@@ -10,19 +10,25 @@ def main():
     print("🧬 Genos Variant Prediction Example")
     print("=" * 50)
     
-    # Example 1: Basic variant prediction with hg19
-    print("\n📊 Example 1: Basic variant prediction (hg19)")
+    # Example 1: GRCh38 variant. score is the published fusion score (p_fusion).
+    print("\n📊 Example 1: Basic variant prediction (hg38)")
     try:
-        result = client.variant_predict(
-            assembly="hg19",
-            chrom="chr6", 
+        response = client.variant_predict(
+            assembly="hg38",
+            chrom="chr6",
             pos=51484075,
             ref="T",
             alt="G"
         )
+        result = response["result"]
         print(f"✅ Prediction: {result['prediction']}")
-        print(f"   Pathogenic Score: {result['score_Pathogenic']:.4f}")
-        print(f"   Benign Score: {result['score_Benign']:.4f}")
+        print(f"   Published score: {result['score']:.4f}")
+        if result.get("p_mlp") is not None:
+            print(f"   p_mlp: {result['p_mlp']:.4f}")
+        if result.get("p_evee") is not None:
+            print(f"   p_evee: {result['p_evee']:.4f}")
+    except PackageUpdateRequired as e:
+        print(f"❌ Package update required: {e}")
     except APIRequestError as e:
         print(f"❌ API Error: {e}")
     except ValidationError as e:
@@ -31,16 +37,22 @@ def main():
     # Example 2: Using hg38 reference genome
     print("\n📊 Example 2: hg38 reference genome")
     try:
-        result = client.variant_predict(
+        response = client.variant_predict(
             assembly="hg38",
-            chrom="chr6",
-            pos=51484075, 
+            chrom="chrX",
+            pos=53580905,
             ref="T",
-            alt="G"
+            alt="C"
         )
+        result = response["result"]
         print(f"✅ Prediction: {result['prediction']}")
-        print(f"   Pathogenic Score: {result['score_Pathogenic']:.4f}")
-        print(f"   Benign Score: {result['score_Benign']:.4f}")
+        print(f"   Published score: {result['score']:.4f}")
+        if result.get("p_mlp") is not None:
+            print(f"   p_mlp: {result['p_mlp']:.4f}")
+        if result.get("p_evee") is not None:
+            print(f"   p_evee: {result['p_evee']:.4f}")
+    except PackageUpdateRequired as e:
+        print(f"❌ Package update required: {e}")
     except APIRequestError as e:
         print(f"❌ API Error: {e}")
     except ValidationError as e:
@@ -57,7 +69,7 @@ def main():
             ref="T", 
             alt="G"
         )
-    except ValidationError as e:
+    except (ValidationError, ValueError) as e:
         print(f"✅ Caught expected validation error: {e}")
 
 if __name__ == "__main__":

@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 import requests
 from .config import GenosConfig
+from .version import __version__
 from .api.variant_predictor import VariantPredictorAPI
 from .api.embedding_extractor import EmbeddingExtractorAPI
 from .api.rna_seq_coverage_track_prediction import RNASeqCoverageTrackPredictionAPI
@@ -17,12 +18,12 @@ class GenosClient:
     Example:
         >>> from genos import create_client
         >>> client = create_client(token="your_token")
-        >>> client.variant_predict("hg19", "chr6", 51484075, "T", "G")
+        >>> client.variant_predict("hg38", "chr6", 51484075, "T", "G")
         >>> client.get_embedding("ATGC...")
         >>> client.rna_coverage_track_pred(chrom="chr6", start_pos=51484075)
     """
 
-    def __init__(self, token=None, timeout=30, api_map=None):
+    def __init__(self, token=None, timeout=30, api_map=None, variant_model=None, embedding_model=None):
         """
         Initialize the GeneOS API client.
 
@@ -33,7 +34,13 @@ class GenosClient:
             api_map (dict, optional): Custom mapping for each API module URL.
         """
         # Load full configuration
-        self.config = GenosConfig(token=token, timeout=timeout, api_map=api_map)
+        self.config = GenosConfig(
+            token=token,
+            timeout=timeout,
+            api_map=api_map,
+            variant_model=variant_model,
+            embedding_model=embedding_model,
+        )
 
         # Setup a shared HTTP session
         self.session = requests.Session()
@@ -44,46 +51,69 @@ class GenosClient:
         else:
             self.session.headers.update({"Authorization": f"Bearer <your_api_key>"})  # TODO: for test
 
+        self.session.headers.update({
+            "User-Agent": f"genos/{__version__}",
+            "X-Genos-Client-Version": __version__,
+        })
+
         # Initialize all API modules
 
         self.variant = VariantPredictorAPI(
-            self.session, self.config.get_api_url("variant"), self.config.timeout
+            self.session,
+            self.config.get_api_url("variant"),
+            self.config.timeout,
+            model=self.config.variant_model,
         )
         self.embedding = EmbeddingExtractorAPI(
-            self.session, self.config.get_api_url("embedding"), self.config.timeout
+            self.session,
+            self.config.get_api_url("embedding"),
+            self.config.timeout,
+            model=self.config.embedding_model,
         )
         self.rna = RNASeqCoverageTrackPredictionAPI(
             self.session, self.config.get_api_url("rna"), self.config.timeout
         )
 
-    def variant_predict(self, assembly: str, chrom: str, pos: int, ref: str, alt: str):
+    def variant_predict(self, assembly: str = "hg38", chrom: str = None, pos: int = None, ref: str = None, alt: str = None, model: str = None):
         """
         Predicts the functional or pathogenic effect of a given genetic variant.
 
         Args:
-            assembly (str): Reference genome version, allowed values: 'hg38' or 'hg19'.
+            assembly (str): Reference genome. Only ``'hg38'`` is accepted. Default: ``'hg38'``.
             chrom (str): Chromosome, e.g., 'chr6'.
             pos (int): Position, 1-based coordinate.
             ref (str): Reference allele, single letter or sequence.
             alt (str): Alternate allele, single letter or sequence.
 
         Returns:
-            dict: Prediction result, typically containing:
+            dict: ``{"result", "status", "message"}``. ``result`` contains:
                 - "variant": input variant
                 - "prediction": "Pathogenic" or "Benign"
-                - "score_Benign": float
-                - "score_Pathogenic": float
-        """
-        return self.variant.predict(assembly, chrom, pos, ref, alt)
+                - "p_mlp": published Global-branch probability
+                - "p_evee": published EVEE-branch probability
+                - "p_fusion": published fusion probability
+                - "score": published fusion score, same value as ``p_fusion``
+                - "fusion_threshold": decision threshold for ``prediction``
 
-    def get_embedding(self, sequence: str, model_name: str = "Genos-1.2B", pooling_method: str = "mean"):
+        Raises:
+            PackageUpdateRequired: If the server rejects this package version.
+        """
+        return self.variant.predict(assembly, chrom, pos, ref, alt, model=model)
+
+    def get_embedding(self, sequence: str, model_name: str = None, pooling_method: str = "mean"):
         """
         Extracts a numerical embedding representation for a given nucleotide sequence.
 
+        ``model_name`` is sent as ``model_name``. ``Genos-1.2B`` is also sent
+        as the gateway field ``model="Genos-1_2B"``. A call with
+        ``model_name="Genos-1.2B"`` sends
+        ``{"model": "Genos-1_2B", "model_name": "Genos-1.2B", "sequence": "...", "pooling_method": "mean"}``.
+
         Args:
             sequence (str ): DNA sequence string .
-            model_name (str, optional): Model name to use. Default is "Genos-1.2B".
-                Options: "Genos-1.2B", "Genos-10B"
+            model_name (str, optional): Value of the request field ``model_name``.
+                Default is "Genos-1.2B", or the client's ``embedding_model``.
+                Options: "Genos-1.2B", "Genos-10B", "Genos-10B-v2"
             pooling_method (str, optional): Pooling method. Default is "mean".
                 Options: "mean", "max", "last", "none"
 

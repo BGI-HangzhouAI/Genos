@@ -51,6 +51,11 @@
 
 ## Updates
 
+- **2026.11.02** | **Updated Variant Pathogenicity Scoring API** 🚀
+  - **Architecture**: Introduced evolutionary conservation information and an [EVEE](https://www.biorxiv.org/content/10.64898/2026.04.10.717844v1)-inspired dual-branch architecture, combining global sequence representations with local variant perturbation modeling.
+  - **Training Data**: Expanded to approximately **7.63 million variant records**, integrating CADD, AlphaMissense, dbNSFP, REVEL, Gnocchi, ClinVar (**472K**), and TraitGym (**159K**).
+  - **Performance**: On a public [splicing-related variant benchmark](https://github.com/marcel-2c8/splicing-model-eval-2026/blob/main/data/multigene_variants.csv), sensitivity improved from **27.6% to 80.3%**, and specificity from **85.0% to 97.2%**, compared with the previous version.
+
 - **2026.01.30** | Released [Gengram](https://github.com/BGI-HangzhouAI/Gengram) — a retrieval-augmented genomic foundation model featuring explicit motif memory, efficient hash-based k-mer lookup, and enhanced biological interpretability. 🚀 Explore it and see how it transforms genomic modeling！
 - **2025.12.25** | Added [NTv3-650M-Pre](https://huggingface.co/InstaDeepAI/NTv3_650M_pre) as a new competitor model in the Performance Evaluation section. Stay tuned to see how it performs against our Genos-10B-v2 model!
 - **2025.12.18** | Released Genos-10B-v2 model: `Genos-10B-v2`.

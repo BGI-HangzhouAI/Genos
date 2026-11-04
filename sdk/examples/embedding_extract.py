@@ -30,7 +30,7 @@ def main():
     
     # Example 2: Different models
     print("\n📊 Example 2: Different models")
-    models = ["Genos-1.2B", "Genos-10B"]
+    models = ["Genos-1.2B", "Genos-10B", "Genos-10B-v2"]
     for model in models:
         try:
             result = client.get_embedding(sequence, model_name=model)
