@@ -51,6 +51,11 @@
 
 ## 更新速览
 
+- 2026.11.02：**变异致病性评分 API 更新**
+  - 模型架构优化：引入位点保守性信息，借鉴 [EVEE probe-based建模](https://www.biorxiv.org/content/10.64898/2026.04.10.717844v1) 策略，通过 Global 和 EVEE 两条分支分别表征序列整体特征与局部扰动，综合输出致病性概率，优化变异致病性预测模型。
+  - 训练数据扩充：整合 5M、Gnocchi、ClinVar 和 TraitGym 等多来源数据，并经过严格质量控制，将纳入训练的 ClinVar 记录由原来的 **3 万余条扩充至 47 万余条**。
+  - 预测性能提升：在公开[剪接相关变异评测集](https://github.com/marcel-2c8/splicing-model-eval-2026/blob/main/data/multigene_variants.csv)上，相较于第一版评分模型，新模型的**敏感性由 27.6% 提升至 80.3%，特异性由 85.0% 提升至 97.2%**，表明模型在该评测集上的致病变异识别能力和良性变异区分能力均得到改善。
+
 - 2026.01.30: 发布 [Gengram](https://github.com/BGI-HangzhouAI/Gengram)：检索增强的基因组基础模型，引入显式 motif memory、哈希加速的 k-mer 检索与更强的生物学可解释性。🚀 欢迎体验，看看它如何推动基因组建模。
 
 - 2025.12.25: 新增竞品模型`NTv3-650M-Pre`
